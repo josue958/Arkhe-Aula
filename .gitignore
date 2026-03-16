@@ -9,9 +9,10 @@ dist-app/
 Thumbs.db
 .env
 *.log
-build/icon.icns
-build/icon.ico
-build/icon.png
+# build/icon.icns (Comentado para permitir su subida)
+# build/icon.ico
+# build/icon.png
+
 Ejecutables/
 coverage/
 *.tgz
