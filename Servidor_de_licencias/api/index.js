@@ -1,11 +1,6 @@
-require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2/promise');
-const cors = require('cors');
-
-const app = express();
-app.use(cors());
-app.use(express.json());
+const router = express.Router();
 
 const dbConfig = {
     host: process.env.DB_HOST || 'localhost',
@@ -24,7 +19,7 @@ async function getPool() {
 }
 
 // Endpoint: /activate
-app.post('/api/activate', async (req, res) => {
+router.post('/activate', async (req, res) => {
     const { email, clave, device_id, version } = req.body;
 
     if (!email || !clave || !device_id) {
@@ -70,7 +65,7 @@ app.post('/api/activate', async (req, res) => {
             data: {
                 email: licencia.email,
                 expira: licencia.fecha_expiracion,
-                token: 'SIGNED_TOKEN_HERE' // Podrías usar JWT aquí para mayor seguridad
+                token: 'SIGNED_TOKEN_HERE' 
             }
         });
 
@@ -81,7 +76,7 @@ app.post('/api/activate', async (req, res) => {
 });
 
 // Endpoint: /validate
-app.post('/api/validate', async (req, res) => {
+router.post('/validate', async (req, res) => {
     const { clave, device_id } = req.body;
 
     try {
@@ -112,12 +107,25 @@ app.post('/api/validate', async (req, res) => {
     }
 });
 
-// Admin Panel (Basic simulation)
-app.get('/admin', (req, res) => {
-    res.send('Panel de Administración de Licencias Arkhe (Próximamente)');
+// Endpoint: /revoke (New)
+router.post('/revoke', async (req, res) => {
+    const { clave, device_id, admin_token } = req.body;
+
+    // Validación básica de admin_token (en producción usar JWT real)
+    if (admin_token !== process.env.ADMIN_TOKEN) {
+        return res.status(401).json({ success: false, message: 'No autorizado' });
+    }
+
+    try {
+        const db = await getPool();
+        await db.execute(
+            'UPDATE licencias SET estado = "revocada" WHERE clave = ? AND device_id = ?',
+            [clave, device_id]
+        );
+        res.json({ success: true, message: 'Licencia revocada' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Error al revocar' });
+    }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor de licencias corriendo en puerto ${PORT}`);
-});
+module.exports = router;
