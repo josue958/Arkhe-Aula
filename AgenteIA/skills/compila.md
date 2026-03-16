@@ -132,16 +132,19 @@ npm run build        # Ambas plataformas
 
 ```text
 Ejecutables/
-├── v1.11.0/
-│   ├── Arkhe Aula Setup 1.11.0.exe
-│   ├── Arkhe Aula-Portable-1.11.0.exe
-│   ├── Arkhe Aula-1.11.0.dmg
+├── v1.14.0/
+│   ├── Arkhe Aula Setup 1.14.0.exe
+│   ├── Arkhe Aula-Portable-1.14.0.exe
+│   ├── Arkhe Aula-1.14.0.dmg
 │   └── latest.yml
-├── v1.11.1/
+├── v1.13.0/
 │   └── ...
-└── v1.12.0/
-    └── ...
+├── free/                    # Versión gratuita (Free tier)
+│   └── ...
+└── latest.yml               # Manifest de actualización
 ```
+
+> **Nota:** La carpeta `free/` contiene los ejecutables de la versión gratuita (plan Free con 3 grupos, 40 alumnos).
 
 ### 6. Verificar Output (AUTOMÁTICO)
 
@@ -149,27 +152,25 @@ Ejecutables/
 
 1. **Organiza archivos por versión** en `Ejecutables/v{VERSION}/`
 2. **Actualiza `agente.md`** con la nueva versión
-3. **Crea commit y tag** de la versión
-4. **Hace push a GitHub** (main + tags)
-5. **Activa GitHub Actions** para compilar
+3. **Crea commit y tag** de la versión localmente
+4. **Sube a GitHub Releases** directamente (sin GitHub Actions)
+
+**Con `npm run release` el proceso es 100% automático:**
+- Compila → Organiza → Crea tag → Sube a GitHub
+- No requiere confirmación ni intervención
+- Crea el release como DRAFT para revisión manual
 
 **Verifica en GitHub:**
 
-1. **Actions:** https://github.com/josue958/Arkhe-Aula/actions
-   - Espera ~15-25 minutos
-   - Verifica que ambos builds (Windows y macOS) terminen exitosamente
-
-2. **Releases:** https://github.com/josue958/Arkhe-Aula/releases
+1. **Releases:** https://github.com/josue958/Arkhe-Aula/releases
    - Verifica que se creó el release draft
    - Revisa que todos los archivos estén presentes:
      - `Arkhe Aula Setup {version}.exe`
      - `Arkhe Aula-Portable-{version}.exe`
-     - `Arkhe Aula-{version}.dmg`
-     - `Arkhe Aula-{version}-arm64.dmg`
      - `latest.yml`
      - `latest-mac.yml`
 
-3. **Publica el release** cuando estés listo
+2. **Publica el release** cuando estés listo
 
 **Verifica en la aplicación:**
 
