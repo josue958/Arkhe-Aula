@@ -1,6 +1,6 @@
 {
   "name": "arkhe-aula",
-  "version": "1.12.8",
+  "version": "1.14.0",
   "description": "Arkhe Aula — Sistema de Evaluación Docente para Escritorio",
   "main": "electron/main.js",
   "author": "Arkhe Group",

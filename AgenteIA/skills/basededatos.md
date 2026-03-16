@@ -313,11 +313,73 @@ Cada vez que se cree o modifique:
 3. **IPC Handlers:** Actualizar `electron/ipc-handlers.js`
 4. **Servicios Frontend:** Actualizar `src/services/`
 
-### Diagrama Entidad-Relación
-Mantener actualizado el DER en la carpeta `documentacion/` con:
-- Tablas y sus columnas
-- Relaciones entre tablas
 - Cardinalidad de relaciones
+
+## Persistencia de Ajustes Locales (LocalStorage)
+
+Para configuraciones técnicas y preferencias de sesión que no requieren almacenamiento en BD persistente de servidor:
+
+| Clave | Descripción | Valores |
+| :--- | :--- | :--- |
+| `arkhe-ai-model` | Modelo de IA seleccionado | `gemini-3-flash`, `qwen-2.5-72b`, etc. |
+| `arkhe-qwen-key` | Token de API para Qwen | String (encriptado en BD local si es sensible) |
+| `arkhe-sync-config` | Estado de sincronización | JSON stringified |
+
+> **Nota:** Estas claves se gestionan principalmente desde `SettingsPage.vue`.
+
+## Tabla de Licencias (Freemium)
+
+### licenses
+```sql
+CREATE TABLE IF NOT EXISTS licenses (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  school_id INTEGER REFERENCES schools(id),
+  plan_type TEXT NOT NULL DEFAULT 'free' CHECK(plan_type IN ('free', 'basic', 'premium', 'enterprise')),
+  license_key TEXT,
+  max_groups INTEGER DEFAULT 3,
+  max_students INTEGER DEFAULT 40,
+  has_reports INTEGER DEFAULT 0,
+  has_advanced_evaluation INTEGER DEFAULT 0,
+  has_cloud_sync INTEGER DEFAULT 0,
+  has_support INTEGER DEFAULT 0,
+  is_active INTEGER DEFAULT 1,
+  activated_at TEXT DEFAULT (datetime('now')),
+  expires_at TEXT,
+  created_at TEXT DEFAULT (datetime('now')),
+  updated_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE INDEX idx_licenses_school ON licenses(school_id);
+```
+
+### Planes
+| Plan | max_groups | max_students | has_reports | has_advanced_evaluation | has_cloud_sync | has_support |
+|------|------------|--------------|-------------|------------------------|----------------|--------------|
+| free | 3 | 40 | 0 | 0 | 0 | 0 |
+| basic | 10 | 150 | 1 | 0 | 0 | 0 |
+| premium | 999999 | 999999 | 1 | 1 | 1 | 1 |
+| enterprise | 999999 | 999999 | 1 | 1 | 1 | 1 |
+
+### IPC Handlers Relacionados
+- `license-get` - Obtener licencia actual
+- `license-get-limits` - Obtener límites del plan
+- `license-check-limits` - Verificar límites antes de crear
+- `license-activate` - Activar licencia con clave
+
+### Validación de Límites
+En `groups-create` y `students-create` se verifica el límite antes de crear:
+```javascript
+const license = db().prepare('SELECT max_groups FROM licenses WHERE school_id = 1 AND is_active = 1').get();
+const currentGroups = db().prepare('SELECT COUNT(*) as cnt FROM groups WHERE archived_at IS NULL').get();
+if (license && currentGroups.cnt >= license.max_groups) {
+  return { success: false, message: `Límite alcanzado: Has llegado al máximo de ${license.max_groups} grupos...` };
+}
+```
+
+### StoreFrontend
+- **Ubicación:** `src/stores/license.ts`
+- **Funciones:** `loadLicense()`, `loadCounts()`, `checkLimit()`
+- **Getters:** `canAddGroup`, `canAddStudent`, `groupsRemaining`, `studentsRemaining`, `hasReports`, `hasAdvancedEvaluation`
 
 ## Recursos Adicionales
 

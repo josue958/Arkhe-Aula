@@ -109,6 +109,31 @@ const manejarClick = () => {
 </style>
 ```
 
+#### Componentes Especiales
+
+##### LicenseBanner
+- **Ubicación:** `src/components/LicenseBanner.vue`
+- **Propósito:** Mostrar banner de upgrade cuando el plan es Free
+- **Uso:** Importado en `src/layouts/AppLayout.vue`
+- **Características:**
+  - Muestra badge "FREE" con color terciario
+  - Muestra grupos/alumnos restantes
+  - Botón "Actualizar a Premium" con enlace a https://arkhegroup.com/precios
+  - Solo visible cuando `licenseStore.isFree === true`
+
+##### Stores de Licencia
+- **Ubicación:** `src/stores/license.ts`
+- **Propósito:** Gestionar estado de licencias y límites
+- **Funciones:**
+  - `loadLicense()` - Carga la licencia actual
+  - `loadCounts()` - Carga conteos de grupos/alumnos
+  - `checkLimit(type)` - Verifica si se puede agregar
+- **Getters:**
+  - `isFree`, `isBasic`, `isPremium`
+  - `canAddGroup`, `canAddStudent`
+  - `groupsRemaining`, `studentsRemaining`
+  - `hasReports`, `hasAdvancedEvaluation`, `hasCloudSync`, `hasSupport`
+
 ### TypeScript
 
 #### Definición de Tipos
@@ -228,6 +253,8 @@ export const useAuthStore = defineStore('auth', () => {
 | Badge ID Neutro | `.badge-id-neutro` | Badge con color de identidad neutro |
 | Modal Overlay | `.modal-overlay` | Fondo oscuro para modales |
 | Modal | `.modal` | Contenedor del modal |
+| Tab Button | `.tab-btn` | Botones de navegación entre pestañas (ej. Ajustes) |
+| Active Tab | `.tab-btn.active` | Estado activo de la pestaña seleccionada |
 
 ##### 5. Botones de Colores
 
