@@ -45,18 +45,18 @@ async function uploadToGithub() {
             release = existingRelease;
             console.log('✅ Release encontrado.');
         } catch (e) {
-            console.log('✨ No existe el release, creando uno nuevo (Draft)...');
+            console.log('✨ No existe el release, creando uno nuevo (Público)...');
             const { data: newRelease } = await octokit.rest.repos.createRelease({
                 owner,
                 repo,
                 tag_name: tagName,
                 name: `Release ${tagName}`,
                 body: `Actualizaciones de la versión ${version}.\nBuild local subido automáticamente.`,
-                draft: true,
+                draft: false,
                 prerelease: false
             });
             release = newRelease;
-            console.log('✅ Draft de release creado con éxito.');
+            console.log('✅ Release público creado con éxito.');
         }
 
         // 4. Identificar archivos a subir

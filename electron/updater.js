@@ -52,7 +52,7 @@ function getAutoUpdateConfig() {
   } catch (e) {
     console.error('[Updater] Error al leer configuración:', e);
   }
-  return { enabled: false }; // Por defecto desactivado
+  return { enabled: true }; // Por defecto activado
 }
 
 function saveAutoUpdateConfig(enabled) {

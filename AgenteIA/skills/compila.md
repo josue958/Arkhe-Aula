@@ -24,14 +24,10 @@ git checkout desarrollo
 # Crea un archivo .env en la raíz y añade:
 # GH_TOKEN=tu_token_de_github
 
-# 3. Lanza el release completo
-# Esto: Compila (Win/Mac) -> Organiza Versión -> Commit -> Tag -> Sube a GitHub directamente
-# Nota: La compilación de Mac genera automáticamente los .dmg para Apple Intel (x64) y procesadores M (arm64)
-# El release se crea como DRAFT en GitHub para revisión final.
+# 3. Lanza el release completo (AUTOMÁTICO Y PÚBLICO)
+# Esto: Compila (Win/Mac) -> Organiza Versión -> Commit -> Tag -> Pública en GitHub directamente
+# El release se crea como PÚBLICO para que todos puedan descargarlo sin contraseña.
 npm run release
-
-# O si solo quieres subir archivos ya compilados:
-npm run upload:github
 ```
 
 > **Nota:** La compilación ahora es 100% local en tu equipo. GitHub Actions ya no compila el código (evitando errores de servidor), solo recibe los archivos terminados.
@@ -155,22 +151,15 @@ Ejecutables/
 3. **Crea commit y tag** de la versión localmente
 4. **Sube a GitHub Releases** directamente (sin GitHub Actions)
 
-**Con `npm run release` el proceso es 100% automático:**
-- Compila → Organiza → Crea tag → Sube a GitHub
-- No requiere confirmación ni intervención
-- Crea el release como DRAFT para revisión manual
-
-**Verifica en GitHub:**
+**Con `npm run release` el proceso es 100% automático y PROACTIVO:**
+- Compila → Organiza → Crea tag → Sube a GitHub.
+- **Sin Drafts:** El release se publica inmediatamente como activo.
+- **Sin Contraseñas:** Al ser público, los clientes pueden descargar los assets directamente.
+- El AgenteIA puede (y debe) ejecutar este comando de forma proactiva tras cambios importantes.
 
 1. **Releases:** https://github.com/josue958/Arkhe-Aula/releases
-   - Verifica que se creó el release draft
-   - Revisa que todos los archivos estén presentes:
-     - `Arkhe Aula Setup {version}.exe`
-     - `Arkhe Aula-Portable-{version}.exe`
-     - `latest.yml`
-     - `latest-mac.yml`
-
-2. **Publica el release** cuando estés listo
+   - Verifica que el release v{VERSION} está activo y con todos sus archivos.
+   - Revisa que los clientes reciban la actualización automática.
 
 **Verifica en la aplicación:**
 
@@ -251,15 +240,12 @@ Después de que GitHub Actions termine (~15-25 minutos):
 # - Notas del release generadas automáticamente
 ```
 
-### 5. Publicar Release (MANUAL)
+### 5. Verificación de Actualización (PÚBLICA)
 
-```bash
-# 1. Ve a GitHub Releases
-# 2. Haz clic en el release draft v{VERSION}
-# 3. Revisa las notas del release
-# 4. Haz clic en "Publish release"
-# 5. ¡LISTO! Los usuarios ahora pueden descargar
-```
+Los usuarios recibirán la notificación de actualización automáticamente gracias a que:
+1. El repositorio es público.
+2. `enabled: true` es el valor por defecto en `updater.js`.
+3. El release no está en draft.
 
 ### 6. Documentar en Contexto
 
