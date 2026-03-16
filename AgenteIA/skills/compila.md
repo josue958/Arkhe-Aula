@@ -4,27 +4,39 @@
 
 Este skill contiene las instrucciones exactas para realizar builds y construcciones de versiones del proyecto Arkhe Aula.
 
-## ⚠️ IMPORTANTE: PUBLICACIÓN AUTOMÁTICA A GITHUB
+## ⚠️ NUEVO FLUJO DE VERSIONES (OPCIÓN A)
 
-**DESDE LA VERSIÓN 1.12.8 EN ADELANTE, EL BUILD PUBLICA AUTOMÁTICAMENTE A GITHUB RELEASES.**
+**DESDE LA VERSIÓN 1.12.8, EL REPOSITORIO EN GITHUB ES UN PORTAL DE DESCARGAS Y DOCUMENTACIÓN.**
 
-Cada vez que ejecutes `npm run build`, el sistema **AUTOMÁTICAMENTE**:
-1. ✅ Actualiza la versión en `agente.md`
-2. ✅ Crea un commit con los cambios
-3. ✅ Crea un tag de la versión (ej: `v1.12.8`)
-4. ✅ Hace push a GitHub (rama main + tags)
-5. ✅ Activa GitHub Actions para compilar el release
-6. ✅ Crea un release draft en GitHub
+Para mantener el repositorio limpio y evitar errores de servidor, el flujo de trabajo es el siguiente:
 
-**NO necesitas preguntar ni confirmar.** El proceso es automático.
+1.  **Rama `desarrollo`**: Todo el desarrollo y las compilaciones se realizan en esta rama. Tu código fuente vive aquí.
+2.  **Rama `main`**: Solo contiene el archivo `agente.md`, los skills de la `AgenteIA/` y el portal de descargas. Es la cara pública del proyecto.
+3.  **Compilación Local**: La compilación se realiza en tu Mac (es más rápida y fiable).
+4.  **Publicación Directa**: Al ejecutar `npm run release`, el sistema compila localmente y **sube automáticamente** los instaladores a la sección de **Releases de GitHub**.
 
-**Tu única tarea manual:**
-- Esperar ~15-25 minutos a que GitHub Actions compile
-- Ir a GitHub Releases
-- Revisar el release draft
-- Publicar el release
+**Comando para lanzar una nueva versión:**
+```bash
+# 1. Asegúrate de estar en la rama de desarrollo
+git checkout desarrollo
+
+# 2. Configura tu Token (Solo la primera vez)
+# Crea un archivo .env en la raíz y añade:
+# GH_TOKEN=tu_token_de_github
+
+# 3. Lanza el release completo
+# Esto: Compila (Win/Mac) -> Organiza Versión -> Commit -> Tag -> Sube a GitHub directamente
+npm run release
+
+# O si solo quieres subir archivos ya compilados:
+npm run upload:github
+```
+
+> **Nota:** La compilación ahora es 100% local en tu equipo. GitHub Actions ya no compila el código (evitando errores de servidor), solo recibe los archivos terminados.
+
 
 ---
+
 
 ## Comandos de Construcción
 

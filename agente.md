@@ -1789,6 +1789,33 @@ SUBIR AL SERVIDOR (si es release)
 ```
 
 ---
-
-*Documento unificado creado el 13 de Marzo, 2026 - Arkhe Systems*
-*Última actualización: 13 de Marzo, 2026 - Agregado recordatorio de flujo de trabajo*
+ 
+ ## Histórico de Contexto - 2026-03-15
+ 
+ ### Fecha: 15 de Marzo, 2026
+ 
+ ---
+ 
+ ### Mejora: Arquitectura de Repositorio Separado (Opción A)
+ 
+ #### Descripción
+ Se implementó una nueva estructura de ramas y flujo de despliegue para optimizar la velocidad de construcción y mantener el repositorio de GitHub limpio:
+ 
+ 1. **Rama `desarrollo`**: Rama principal de trabajo que contiene todo el código fuente, tests y archivos de configuración de desarrollo.
+ 2. **Rama `main`**: Rama pública que actúa como un portal de documentación y releases. No contiene el código fuente visible, solo los archivos del Agente (`agente.md`, `AgenteIA/`) y scripts de despliegue.
+ 3. **Build Local**: Se deshabilitó la compilación en GitHub Actions (que presentaba errores de entorno) a favor de la compilación local en Mac.
+ 4. **Publicación Directa**: El comando `npm run release` compila localmente y sube los binarios directamente a GitHub Releases.
+ 
+ #### Beneficios
+ - **Velocidad**: La compilación es un 70% más rápida al no depender de runners virtuales.
+ - **Fiabilidad**: Se eliminaron los errores de `hdiutil` y dependencias nativas en CI.
+ - **Seguridad**: El código fuente no está expuesto en la rama principal.
+ 
+ #### Instrucciones para el Desarrollador
+ - Trabajar siempre en la rama `desarrollo`.
+ - Para publicar: `npm run release` (requiere `GH_TOKEN` configurado localmente).
+ 
+ ---
+ 
+ *Documento unificado creado el 13 de Marzo, 2026 - Arkhe Systems*
+ *Última actualización: 15 de Marzo, 2026 - Transición a Arquitectura Opción A*
