@@ -26,6 +26,7 @@ git checkout desarrollo
 
 # 3. Lanza el release completo
 # Esto: Compila (Win/Mac) -> Organiza Versión -> Commit -> Tag -> Sube a GitHub directamente
+# Nota: La compilación de Mac genera automáticamente los .dmg para Apple Intel (x64) y procesadores M (arm64)
 npm run release
 
 # O si solo quieres subir archivos ya compilados:
