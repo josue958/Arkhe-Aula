@@ -3,6 +3,8 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useToastStore } from '@/stores/toast'
+import { useLicenseStore } from '@/stores/license'
+import LicenseBanner from '@/components/LicenseBanner.vue'
 import pkg from '../../package.json'
 
 import draggable from 'vuedraggable'
@@ -105,6 +107,9 @@ const sidebarCollapsed = ref(false)
     style="position: fixed; top: 0; left: 0; right: 0; height: 12px; -webkit-app-region: drag; z-index: 9999; pointer-events: none;"
     aria-hidden="true"
   ></div>
+
+  <!-- Banner de licencia -->
+  <LicenseBanner />
 
   <div class="app-layout">
     <!-- Sidebar -->

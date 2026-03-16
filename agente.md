@@ -11,7 +11,53 @@
 | **Sistema** | Arkhe Aula |
 | **Empresa** | Arkhe Systems |
 | **Descripción** | Sistema de Evaluación Docente para Escritorio |
-| **Versión** | 1.12.8 |
+| **Versión**     | 1.14.0                                        |
+
+---
+
+## Modelo de Suscripción (Freemium)
+
+### Planes Disponibles
+
+| Plan | Grupos | Alumnos | Características |
+|------|--------|---------|----------------|
+| **Free** | 3 | 40 | Asistencia, Evaluación básica, PDA, Equipos, Sin reportes |
+| **Básico** | 10 | 150 | Todo Free + Reportes básicos |
+| **Premium** | Ilimitado | Ilimitado | Todo Básico + Evaluación avanzada, Sync en la nube, Soporte |
+| **Enterprise** | Ilimitado | Ilimitado | Todo Premium + Soporte prioritario |
+
+### Tabla de Licencias (BD)
+```sql
+CREATE TABLE licenses (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  school_id INTEGER REFERENCES schools(id),
+  plan_type TEXT NOT NULL DEFAULT 'free',
+  license_key TEXT,
+  max_groups INTEGER DEFAULT 3,
+  max_students INTEGER DEFAULT 40,
+  has_reports INTEGER DEFAULT 0,
+  has_advanced_evaluation INTEGER DEFAULT 0,
+  has_cloud_sync INTEGER DEFAULT 0,
+  has_support INTEGER DEFAULT 0,
+  is_active INTEGER DEFAULT 1,
+  activated_at TEXT,
+  expires_at TEXT
+);
+```
+
+### Store de Licencia
+- **Ubicación:** `src/stores/license.ts`
+- **Funciones:** `loadLicense()`, `loadCounts()`, `checkLimit()`, `canAddGroup`, `canAddStudent`
+
+### IPC Handlers de Licencia
+- `license-get` - Obtener licencia actual
+- `license-get-limits` - Obtener límites
+- `license-check-limits` - Verificar límites
+- `license-activate` - Activar licencia con clave
+
+### Componente Banner
+- **Ubicación:** `src/components/LicenseBanner.vue`
+- Muestra banner en versión Free con botón de upgrade
 
 ---
 
@@ -166,6 +212,8 @@ agente.md         # ESTE ARCHIVO - Documento unificado principal
 4. Release se crea como draft en GitHub
 5. Revisar y publicar release manualmente
 6. Usuarios reciben notificación de actualización
+7. **IA Integrada:** Antigravity permite seleccionar el modelo de IA (Gemini, Claude, GPT-OSS, Qwen 2.5) desde la configuración.
+8. **Separación de Proyecto Web:** El sitio `Arkhe_Aula_Web` se ha convertido en un proyecto independiente con su propio AgenteIA para facilitar su portabilidad.
 
 ### Comandos de Release
 ```bash
@@ -1815,7 +1863,56 @@ SUBIR AL SERVIDOR (si es release)
  - Trabajar siempre en la rama `desarrollo`.
  - Para publicar: `npm run release` (requiere `GH_TOKEN` configurado localmente).
  
- ---
- 
- *Documento unificado creado el 13 de Marzo, 2026 - Arkhe Systems*
- *Última actualización: 15 de Marzo, 2026 - Transición a Arquitectura Opción A*
+---
+
+## Histórico de Contexto - 2026-03-16
+
+### Fecha: 16 de Marzo, 2026
+
+---
+
+### Feature: Modelo Freemium + Suscripción
+
+#### Descripción
+Se implementó el sistema de licencias y suscripción para el modelo de negocio Freemium:
+
+1. **Tabla de licencias en BD** (`electron/database.js`):
+   - `licenses` con plan_type (free/basic/premium/enterprise)
+   - Límites: max_groups, max_students
+   - Features: has_reports, has_advanced_evaluation, has_cloud_sync, has_support
+
+2. **Handlers IPC** (`electron/ipc-handlers.js`):
+   - `license-get` - Obtener licencia actual
+   - `license-get-limits` - Obtener límites
+   - `license-check-limits` - Verificar límites antes de crear
+   - `license-activate` - Activar licencia con clave
+
+3. **Store de licencia** (`src/stores/license.ts`):
+   - Carga de licencia y contadores
+   - Validación de límites (canAddGroup, canAddStudent)
+   - Propiedades computadas para features
+
+4. **Validación en handlers**:
+   - `groups-create` - Verifica límite de grupos antes de crear
+   - `students-create` - Verifica límite de alumnos antes de crear
+
+5. **Componente LicenseBanner** (`src/components/LicenseBanner.vue`):
+   - Banner visible solo en versión Free
+   - Muestra grupos/alumnos restantes
+   - Botón de upgrade a Premium
+
+6. **Carpeta Free** (`Ejecutables/free/`):
+   - Preparada para versión gratuita
+
+#### Planes Implementados
+| Plan | Grupos | Alumnos | Features |
+|------|--------|---------|----------|
+| Free | 3 | 40 | Asistencia, Evaluación básica, PDA, Equipos |
+| Basic | 10 | 150 | + Reportes |
+| Premium | ∞ | ∞ | + Evaluación avanzada, Cloud Sync, Soporte |
+| Enterprise | ∞ | ∞ | + Soporte prioritario |
+
+---
+
+*Documento unificado creado el 13 de Marzo, 2026 - Arkhe Systems*
+*Última actualización: 16 de Marzo, 2026 - Modelo Freemium implementado*

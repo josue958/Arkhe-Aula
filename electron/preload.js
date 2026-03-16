@@ -44,6 +44,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getSchool: () => ipcRenderer.invoke('school-get'),
   saveSchool: (data) => ipcRenderer.invoke('school-save', data),
 
+  // ── LICENCIAS Y SUSCRIPCIONES ─────────────
+  getLicense: () => ipcRenderer.invoke('license-get'),
+  getLicenseLimits: () => ipcRenderer.invoke('license-get-limits'),
+  checkLicenseLimits: (type, currentCount) => ipcRenderer.invoke('license-check-limits', { type, currentCount }),
+  activateLicense: (licenseKey, planType) => ipcRenderer.invoke('license-activate', { licenseKey, planType }),
+
   // ── CICLOS ESCOLARES ──────────────────────
   getCycles: () => ipcRenderer.invoke('cycles-get-all'),
   createCycle: (data) => ipcRenderer.invoke('cycles-create', data),

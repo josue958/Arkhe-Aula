@@ -440,6 +440,27 @@ function createSchema() {
       created_at TEXT DEFAULT (datetime('now')),
       updated_at TEXT DEFAULT (datetime('now'))
     );
+
+    -- Licencias y Suscripciones (Freemium)
+    CREATE TABLE IF NOT EXISTS licenses (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      school_id INTEGER REFERENCES schools(id),
+      plan_type TEXT NOT NULL DEFAULT 'free' CHECK(plan_type IN ('free', 'basic', 'premium', 'enterprise')),
+      license_key TEXT,
+      max_groups INTEGER DEFAULT 3,
+      max_students INTEGER DEFAULT 40,
+      has_reports INTEGER DEFAULT 0,
+      has_advanced_evaluation INTEGER DEFAULT 0,
+      has_cloud_sync INTEGER DEFAULT 0,
+      has_support INTEGER DEFAULT 0,
+      is_active INTEGER DEFAULT 1,
+      activated_at TEXT DEFAULT (datetime('now')),
+      expires_at TEXT,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE INDEX idx_licenses_school ON licenses(school_id);
   `);
 
   try {
@@ -586,6 +607,12 @@ function seedDefaults() {
     ];
     const stmt = db.prepare(`INSERT INTO performance_indicators (school_id, label, min_value, max_value, color, sort_order) VALUES (?, ?, ?, ?, ?, ?)`);
     indicators.forEach(i => stmt.run(...i));
+  }
+
+  const licenseCount = db.prepare('SELECT COUNT(*) as cnt FROM licenses').get();
+  if (licenseCount.cnt === 0) {
+    db.prepare(`INSERT INTO licenses (school_id, plan_type, max_groups, max_students, has_reports, has_advanced_evaluation, has_cloud_sync, has_support) VALUES (1, 'free', 3, 40, 0, 0, 0, 0)`).run();
+    console.log('[DB] Licencia Free creada por defecto: 3 grupos, 40 alumnos');
   }
 }
 

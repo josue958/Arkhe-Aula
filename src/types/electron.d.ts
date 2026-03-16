@@ -30,6 +30,12 @@ interface ElectronAPI {
   getSchool: () => Promise<any>
   saveSchool: (data: any) => Promise<{ success: boolean }>
 
+  // Licencias y Suscripciones
+  getLicense: () => Promise<any>
+  getLicenseLimits: () => Promise<any>
+  checkLicenseLimits: (type: string, currentCount: number) => Promise<{ allowed: boolean; limit?: number }>
+  activateLicense: (licenseKey: string, planType: string) => Promise<{ success: boolean; plan?: string; message?: string }>
+
   // Ciclos
   getCycles: () => Promise<any[]>
   createCycle: (data: any) => Promise<{ success: boolean; id?: number }>

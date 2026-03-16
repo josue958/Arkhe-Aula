@@ -210,6 +210,75 @@ ipcMain.handle('school-save', async (_, data) => {
 });
 
 // ──────────────────────────────────────────────────────────────────────────────
+// LICENCIAS Y SUSCRIPCIONES
+// ──────────────────────────────────────────────────────────────────────────────
+ipcMain.handle('license-get', async () => {
+  const license = db().prepare('SELECT * FROM licenses WHERE school_id = 1 AND is_active = 1').get();
+  if (!license) {
+    return db().prepare(`INSERT INTO licenses (school_id, plan_type, max_groups, max_students, has_reports, has_advanced_evaluation, has_cloud_sync, has_support) VALUES (1, 'free', 3, 40, 0, 0, 0, 0) RETURNING *`).get();
+  }
+  return license;
+});
+
+ipcMain.handle('license-get-limits', async () => {
+  const license = db().prepare('SELECT * FROM licenses WHERE school_id = 1 AND is_active = 1').get();
+  if (!license) {
+    return { plan_type: 'free', max_groups: 3, max_students: 40, has_reports: 0, has_advanced_evaluation: 0, has_cloud_sync: 0, has_support: 0 };
+  }
+  return {
+    plan_type: license.plan_type,
+    max_groups: license.max_groups,
+    max_students: license.max_students,
+    has_reports: license.has_reports,
+    has_advanced_evaluation: license.has_advanced_evaluation,
+    has_cloud_sync: license.has_cloud_sync,
+    has_support: license.has_support
+  };
+});
+
+ipcMain.handle('license-check-limits', async (_, { type, currentCount }) => {
+  const license = db().prepare('SELECT * FROM licenses WHERE school_id = 1 AND is_active = 1').get();
+  if (!license) {
+    return { allowed: true, limit: 3 };
+  }
+
+  const limits = {
+    groups: { current: 'groupsCount', max: license.max_groups, name: 'grupos' },
+    students: { current: 'studentsCount', max: license.max_students, name: 'alumnos' }
+  };
+
+  if (type === 'groups') {
+    return { allowed: currentCount < license.max_groups, limit: license.max_groups, name: 'grupos' };
+  } else if (type === 'students') {
+    return { allowed: currentCount < license.max_students, limit: license.max_students, name: 'alumnos' };
+  }
+  return { allowed: true };
+});
+
+ipcMain.handle('license-activate', async (_, { licenseKey, planType }) => {
+  const plans = {
+    basic: { max_groups: 10, max_students: 150, has_reports: 1, has_advanced_evaluation: 0, has_cloud_sync: 0, has_support: 0 },
+    premium: { max_groups: 999999, max_students: 999999, has_reports: 1, has_advanced_evaluation: 1, has_cloud_sync: 1, has_support: 1 },
+    enterprise: { max_groups: 999999, max_students: 999999, has_reports: 1, has_advanced_evaluation: 1, has_cloud_sync: 1, has_support: 1 }
+  };
+
+  const plan = plans[planType];
+  if (!plan) {
+    return { success: false, message: 'Plan no válido' };
+  }
+
+  const license = db().prepare('SELECT id FROM licenses WHERE school_id = 1').get();
+  if (license) {
+    db().prepare(`UPDATE licenses SET plan_type = ?, license_key = ?, max_groups = ?, max_students = ?, has_reports = ?, has_advanced_evaluation = ?, has_cloud_sync = ?, has_support = ?, is_active = 1, activated_at = datetime('now'), updated_at = datetime('now') WHERE id = ?`)
+      .run(planType, licenseKey, plan.max_groups, plan.max_students, plan.has_reports, plan.has_advanced_evaluation, plan.has_cloud_sync, plan.has_support, license.id);
+  } else {
+    db().prepare(`INSERT INTO licenses (school_id, plan_type, license_key, max_groups, max_students, has_reports, has_advanced_evaluation, has_cloud_sync, has_support) VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?)`)
+      .run(planType, licenseKey, plan.max_groups, plan.max_students, plan.has_reports, plan.has_advanced_evaluation, plan.has_cloud_sync, plan.has_support);
+  }
+  return { success: true, plan: planType };
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
 // CICLOS ESCOLARES
 // ──────────────────────────────────────────────────────────────────────────────
 ipcMain.handle('cycles-get-all', async () => {
@@ -317,6 +386,13 @@ ipcMain.handle('groups-get-one', async (_, id) => {
 });
 
 ipcMain.handle('groups-create', async (_, data) => {
+  const license = db().prepare('SELECT max_groups FROM licenses WHERE school_id = 1 AND is_active = 1').get();
+  const currentGroups = db().prepare('SELECT COUNT(*) as cnt FROM groups WHERE archived_at IS NULL').get();
+  
+  if (license && currentGroups.cnt >= license.max_groups) {
+    return { success: false, message: `Límite alcanzado: Has llegado al máximo de ${license.max_groups} grupos permitidos en tu plan.`, limit: license.max_groups };
+  }
+
   const session = db().prepare('SELECT user_id FROM active_session WHERE id = 1').get();
   const result = db().prepare(`INSERT INTO groups (user_id, school_id, cycle, name, grade, shift, current_period) VALUES (?, 1, ?, ?, ?, ?, ?)`)
     .run(session?.user_id || 1, data.cycle, data.name, data.grade, data.shift || 'matutino', data.current_period || 1);
@@ -535,6 +611,13 @@ ipcMain.handle('students-get-one', async (_, id) => {
 });
 
 ipcMain.handle('students-create', async (_, data) => {
+  const license = db().prepare('SELECT max_students FROM licenses WHERE school_id = 1 AND is_active = 1').get();
+  const currentStudents = db().prepare('SELECT COUNT(*) as cnt FROM students WHERE dropped_at IS NULL').get();
+  
+  if (license && currentStudents.cnt >= license.max_students) {
+    return { success: false, message: `Límite alcanzado: Has llegado al máximo de ${license.max_students} alumnos permitidos en tu plan.`, limit: license.max_students };
+  }
+
   // Obtener el estatus activo por defecto
   const defaultStatus = db().prepare('SELECT id FROM student_statuses WHERE is_default = 1 LIMIT 1').get();
   const enrolledAt = data.enrolled_at || new Date().toISOString().slice(0, 10);
