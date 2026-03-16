@@ -6,6 +6,17 @@ import { useToastStore } from '@/stores/toast'
 const toast = useToastStore()
 const activeTab = ref('school')
 
+const aiConfig = ref({
+  model: localStorage.getItem('arkhe-ai-model') || 'gemini-3-flash',
+  qwenKey: localStorage.getItem('arkhe-qwen-key') || ''
+})
+
+function saveAiConfig() {
+  localStorage.setItem('arkhe-ai-model', aiConfig.value.model)
+  localStorage.setItem('arkhe-qwen-key', aiConfig.value.qwenKey)
+  toast.success('Configuración de IA guardada correctamente.')
+}
+
 // Escuela
 const school = ref<any>({})
 const savingSchool = ref(false)
@@ -236,6 +247,7 @@ const syncProviderName = computed(() => {
   if (syncConfig.value.provider === 'firebase') return 'Google'
   if (syncConfig.value.provider === 'cloudkit') return 'Apple'
   if (syncConfig.value.provider === 'msgraph') return 'Microsoft'
+  if (syncConfig.value.provider === 'qwen') return 'Qwen'
   return 'Ninguno'
 })
 
@@ -903,6 +915,7 @@ function formatBytes(bytes: number) {
         <button class="tab-btn" :class="{ active: activeTab === 'indicators' }" @click="activeTab = 'indicators'">🚦 Semáforo</button>
         <button class="tab-btn" :class="{ active: activeTab === 'database' }" @click="activeTab = 'database'">💾 Base de Datos</button>
         <button class="tab-btn" :class="{ active: activeTab === 'sync' }" @click="activeTab = 'sync'">☁️ Sincronización</button>
+        <button class="tab-btn" :class="{ active: activeTab === 'ia' }" @click="activeTab = 'ia'">🤖 IA</button>
       </div>
     </div>
 
@@ -1355,6 +1368,14 @@ function formatBytes(bytes: number) {
             </svg>
             Continuar con el teléfono
           </button>
+          <button class="social-btn2" @click="simulateLogin('qwen')" style="background: #6366f1; border-color: #4f46e5;">
+            <svg viewBox="0 0 1024 1024" width="20" height="20" fill="currentColor">
+              <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"/>
+              <path d="M512 192c-176.7 0-320 143.3-320 320s143.3 320 320 320 320-143.3 320-320-143.3-320-320-320zm0 576c-141.4 0-256-114.6-256-256s114.6-256 256-256 256 114.6 256 256-114.6 256-256 256z"/>
+              <path d="M512 320c-106 0-192 86-192 192s86 192 192 192 192-86 192-192-86-192-192-192zm0 320c-70.7 0-128-57.3-128-128s57.3-128 128-128 128 57.3 128 128-57.3 128-128 128z"/>
+            </svg>
+            Continuar con Qwen
+          </button>
         </div>
 
         <div style="display: flex; align-items: center; justify-content: center; margin: 24px 0; color: #a1a1aa; font-size: 14px;">
@@ -1394,6 +1415,55 @@ function formatBytes(bytes: number) {
          </div>
       </div>
     </div>
+    <!-- IA -->
+    <div v-if="activeTab === 'ia'" class="fade-in">
+      <div class="card">
+        <h3 style="margin-bottom: 20px;">Planes de IA y Modelos</h3>
+        <p class="text-muted" style="margin-bottom: 24px;">Configura los modelos de Inteligencia Artificial que Antigravity utilizará para asistirte.</p>
+        
+        <div class="grid-2" style="gap: 24px;">
+          <div class="form-group">
+            <label class="form-label">Modelo de IA Predeterminado</label>
+            <select v-model="aiConfig.model" class="form-select">
+              <optgroup label="Modelos Disponibles">
+                <option value="gemini-3.1-pro-high">Gemini 3.1 Pro (High) ⚠️ New</option>
+                <option value="gemini-3.1-pro-low">Gemini 3.1 Pro (Low) ⚠️ New</option>
+                <option value="gemini-3-flash">Gemini 3 Flash</option>
+                <option value="claude-sonnet-4.6">Claude Sonnet 4.6 (Thinking)</option>
+                <option value="claude-opus-4.6">Claude Opus 4.6 (Thinking)</option>
+                <option value="gpt-oss-120b">GPT-OSS 120B (Medium)</option>
+                <option value="qwen-72b">Qwen 2.5 72B (Antigravity Edition)</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">API Key / Token de Qwen</label>
+            <div style="display: flex; gap: 8px;">
+               <input v-model="aiConfig.qwenKey" type="password" class="form-input" placeholder="Ingresa tu token..." />
+               <button class="btn btn-primary" @click="saveAiConfig">Guardar</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
+          <h4 style="margin-bottom: 16px;">Planes Activos</h4>
+          <div class="grid-3" style="gap: 16px;">
+            <div class="card" style="background: rgba(99, 102, 241, 0.05); border: 1px solid var(--color-primary); padding: 16px;">
+               <div style="font-weight: bold; font-size: 15px;">Plan Antigravity</div>
+               <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Acceso premium a Qwen y Gemini</div>
+               <div class="badge badge-success" style="margin-top: 12px;">ACTIVO</div>
+            </div>
+            <div class="card" style="padding: 16px; opacity: 0.7;">
+               <div style="font-weight: bold; font-size: 15px;">Plan Básico</div>
+               <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Solo Gemini Flash</div>
+               <button class="btn btn-sm btn-ghost" style="margin-top: 12px;">Mejorar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <!-- Modal: Nuevo Ciclo -->
     <div v-if="showCycleModal" class="modal-overlay" @click.self="showCycleModal = false">
