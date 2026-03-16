@@ -8,13 +8,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
         <nav class="container">
             <div class="logo">
-                <img src="images/logo.png" alt="Arkhe Aula" onerror="this.src='https://via.placeholder.com/40?text=A'">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="8" fill="url(#logo-gradient)"/>
+                    <path d="M20 8L28 32H12L20 8Z" fill="white" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="logo-gradient" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#6366F1"/>
+                            <stop offset="1" stop-color="#8B5CF6"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
                 <span>Arkhe Aula</span>
             </div>
             <ul class="nav-links">
@@ -31,7 +39,7 @@
                 <h1>El futuro de la <span>Evaluación Docente</span> ya está aquí.</h1>
                 <p>Gestiona grupos, alumnos, asistencias y calificaciones con una herramienta diseñada por maestros para maestros. Simple, rápida y profesional.</p>
                 <div class="hero-btns">
-                    <a href="#descargas" class="btn-primary">Descargar v1.12.8</a>
+                    <a href="#descargas" class="btn-primary" id="btn-descarga-hero" onclick="iniciarDescarga(event, null)">Descargar v1.12.8</a>
                     <a href="#funcionalidad" class="btn-secondary">Saber más</a>
                 </div>
             </div>
@@ -48,22 +56,22 @@
             <h2 class="section-title">¿Qué puedes hacer con Arkhe Aula?</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <i class="fas fa-users"></i>
+                    <img src="iconos/grupos.svg" alt="Gestión de Grupos" class="feature-icon">
                     <h3>Gestión de Grupos</h3>
                     <p>Organiza tus materias y estudiantes de forma intuitiva con perfiles detallados.</p>
                 </div>
                 <div class="feature-card">
-                    <i class="fas fa-check-circle"></i>
+                    <img src="iconos/asistencia.svg" alt="Asistencia Inteligente" class="feature-icon">
                     <h3>Asistencia Inteligente</h3>
                     <p>Toma asistencia rápidamente y genera reportes automáticos por periodo.</p>
                 </div>
                 <div class="feature-card">
-                    <i class="fas fa-graduation-cap"></i>
+                    <img src="iconos/evaluacion.svg" alt="Evaluación PDA" class="feature-icon">
                     <h3>Evaluación PDA</h3>
                     <p>Seguimiento de Programas Didácticos de Aula con rúbricas personalizables.</p>
                 </div>
                 <div class="feature-card">
-                    <i class="fas fa-file-export"></i>
+                    <img src="iconos/reportes.svg" alt="Reportes en un clic" class="feature-icon">
                     <h3>Reportes en un clic</h3>
                     <p>Exporta tus archivos en formatos profesionales listos para entregar.</p>
                 </div>
@@ -76,20 +84,34 @@
             <div class="download-card">
                 <h2>Zona de Descargas</h2>
                 <p>Obtén la <strong>versión gratuita</strong> para tu sistema operativo.</p>
+
+                <div id="os-detected" class="os-detected">
+                    <img src="iconos/cargando.svg" alt="Cargando" class="os-icon-loading"> Detectando tu sistema operativo...
+                </div>
+
                 <div class="platforms">
                     <div class="p-item">
-                        <i class="fab fa-windows"></i>
+                        <img src="iconos/windows.svg" alt="Windows" class="platform-icon">
                         <span>Windows</span>
-                        <a href="https://github.com/josue958/Arkhe-Aula/releases/latest" class="btn-dl">Descargar .exe</a>
+                        <a href="#" id="btn-windows" class="btn-dl" onclick="iniciarDescarga(event, 'windows')">Descargar .exe</a>
                     </div>
                     <div class="p-item">
-                        <i class="fab fa-apple"></i>
+                        <img src="iconos/macos.svg" alt="macOS" class="platform-icon">
                         <span>macOS (Universal)</span>
-                        <a href="https://github.com/josue958/Arkhe-Aula/releases/latest" class="btn-dl">Descargar .dmg</a>
+                        <a href="#" id="btn-macos" class="btn-dl" onclick="iniciarDescarga(event, 'macos')">Descargar .dmg</a>
                     </div>
                 </div>
                 <p class="v-note">Versión actual: 1.12.8 | Incluye soporte para Intel y Apple Silicon.</p>
-                <p class="free-badge"><i class="fas fa-check-circle"></i> 100% Gratis - Sin costo alguno</p>
+                <p class="free-badge"><img src="iconos/check.svg" alt="Check" class="badge-icon"> 100% Gratis - Sin costo alguno</p>
+
+                <div class="storage-info">
+                    <p><img src="iconos/nube.svg" alt="Nube" class="info-icon"> <strong>Almacenamiento:</strong> Tu información se guarda localmente en tu dispositivo o en el servicio de la nube con el que hayas creado tu cuenta.</p>
+                </div>
+
+                <div class="mobile-notice">
+                    <img src="iconos/movil.svg" alt="Móvil" class="notice-icon">
+                    <p><strong>Próximamente para móviles y tablets:</strong> La versión para iOS y Android aún no está disponible. Estamos trabajando para llevar Arkhe Aula a tus dispositivos móviles.</p>
+                </div>
             </div>
         </div>
     </section>

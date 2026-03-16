@@ -56,10 +56,6 @@ nav {
     letter-spacing: -0.5px;
 }
 
-.logo img {
-    height: 40px;
-}
-
 .nav-links {
     display: flex;
     gap: 2rem;
@@ -202,6 +198,16 @@ nav {
     margin-bottom: 1.5rem;
 }
 
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1.5rem;
+}
+
+.feature-card .feature-icon {
+    filter: invert(40%) sepia(96%) saturate(2228%) hue-rotate(216deg) brightness(95%) contrast(93%);
+}
+
 .feature-card h3 {
     margin-bottom: 1rem;
 }
@@ -241,6 +247,12 @@ nav {
     font-size: 3rem;
 }
 
+.platform-icon {
+    width: 64px;
+    height: 64px;
+    filter: invert(100%);
+}
+
 .btn-dl {
     background: var(--text);
     color: var(--bg);
@@ -269,6 +281,117 @@ nav {
 
 .free-badge i {
     margin-right: 0.5rem;
+}
+
+.badge-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    filter: invert(63%) sepia(94%) saturate(495%) hue-rotate(117deg) brightness(95%) contrast(87%);
+}
+
+/* OS Detected Indicator */
+.os-detected {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid var(--primary);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+    display: inline-block;
+    font-weight: 600;
+}
+
+.os-detected i {
+    margin-right: 0.5rem;
+    color: var(--primary);
+}
+
+.os-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
+
+.os-detected .os-icon {
+    filter: invert(40%) sepia(96%) saturate(2228%) hue-rotate(216deg) brightness(95%) contrast(93%);
+}
+
+.os-icon-loading {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    filter: invert(40%) sepia(96%) saturate(2228%) hue-rotate(216deg) brightness(95%) contrast(93%);
+    animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.os-detected.detected {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: #10b981;
+}
+
+.os-detected.detected i {
+    color: #10b981;
+}
+
+.os-detected.detected .os-icon {
+    filter: invert(63%) sepia(94%) saturate(495%) hue-rotate(117deg) brightness(95%) contrast(87%);
+}
+
+/* Storage Info */
+.storage-info {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    font-size: 0.95rem;
+}
+
+.storage-info p {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.storage-info .info-icon {
+    width: 24px;
+    height: 24px;
+    filter: invert(40%) sepia(96%) saturate(2228%) hue-rotate(216deg) brightness(95%) contrast(93%);
+}
+
+/* Mobile Notice */
+.mobile-notice {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: rgba(251, 191, 36, 0.05);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.mobile-notice .notice-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    filter: invert(74%) sepia(51%) saturate(2228%) hue-rotate(1deg) brightness(98%) contrast(90%);
+}
+
+.mobile-notice p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 /* Shop */
@@ -390,4 +513,7 @@ footer {
     .nav-links { display: none; }
     .platforms { flex-direction: column; gap: 2rem; }
     .product-card.premium { transform: scale(1); }
+    .os-detected { display: block; margin: 1.5rem 0; }
+    .storage-info, .mobile-notice { margin: 1.5rem 0; }
+    .mobile-notice { flex-direction: column; text-align: center; align-items: center; }
 }
