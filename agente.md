@@ -11,7 +11,7 @@
 | **Sistema** | Arkhe Aula |
 | **Empresa** | Arkhe Systems |
 | **Descripción** | Sistema de Evaluación Docente para Escritorio |
-| **Versión** | 1.12.7 |
+| **Versión** | 1.12.8 |
 
 ---
 
