@@ -6,10 +6,24 @@
 
 | Plan | Grupos | Alumnos | Características |
 |------|--------|---------|----------------|
-| **Free** | 3 | 40 | Asistencia, Evaluación básica, PDA, Equipos, Sin reportes |
+| **Free** | 3 | 40 | Asistencia, Evaluación básica, PDA, Equipos, Sin reportes, Sin sync, Sin soporte |
 | **Básico** | 10 | 150 | Todo Free + Reportes básicos |
-| **Premium** | Ilimitado | Ilimitado | Todo Básico + Evaluación avanzada, Sync en la nube, Soporte |
+| **Premium** | Ilimitado | Ilimitado | Todo Básico + Sync en la nube + Soporte |
 | **Enterprise** | Ilimitado | Ilimitado | Todo Premium + Soporte prioritario |
+
+### Features por Plan
+
+| Feature | Free | Basic | Premium | Enterprise |
+|---------|------|-------|---------|------------|
+| Grupos | 3 | 10 | ∞ | ∞ |
+| Alumnos | 40 | 150 | ∞ | ∞ |
+| Asistencia | ✅ | ✅ | ✅ | ✅ |
+| Evaluación básica | ✅ | ✅ | ✅ | ✅ |
+| PDA | ✅ | ✅ | ✅ | ✅ |
+| Equipos | ✅ | ✅ | ✅ | ✅ |
+| Reportes | ❌ | ✅ | ✅ | ✅ |
+| Sync en la Nube | ❌ | ❌ | ✅ | ✅ |
+| Soporte | ❌ | ❌ | ✅ | ✅ |
 
 ---
 

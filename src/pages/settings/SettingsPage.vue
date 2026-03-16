@@ -2,9 +2,15 @@
 import { ref, computed, onMounted, nextTick } from 'vue'
 import QRCode from 'qrcode'
 import { useToastStore } from '@/stores/toast'
+import { useLicenseStore } from '@/stores/license'
 
 const toast = useToastStore()
+const licenseStore = useLicenseStore()
 const activeTab = ref('school')
+
+onMounted(() => {
+  licenseStore.loadLicense()
+})
 
 const aiConfig = ref({
   model: localStorage.getItem('arkhe-ai-model') || 'gemini-3-flash',
@@ -914,7 +920,8 @@ function formatBytes(bytes: number) {
         <button class="tab-btn" :class="{ active: activeTab === 'grading' }" @click="activeTab = 'grading'">📊 Calificaciones</button>
         <button class="tab-btn" :class="{ active: activeTab === 'indicators' }" @click="activeTab = 'indicators'">🚦 Semáforo</button>
         <button class="tab-btn" :class="{ active: activeTab === 'database' }" @click="activeTab = 'database'">💾 Base de Datos</button>
-        <button class="tab-btn" :class="{ active: activeTab === 'sync' }" @click="activeTab = 'sync'">☁️ Sincronización</button>
+        <button class="tab-btn" :class="{ active: activeTab === 'sync' }" @click="activeTab = 'sync'" :style="!licenseStore.hasCloudSync ? 'opacity: 0.5;' : ''">☁️ Sincronización<span v-if="!licenseStore.hasCloudSync" style="font-size: 10px; margin-left: 4px;">🔒</span></button>
+        <button class="tab-btn" :class="{ active: activeTab === 'support' }" @click="activeTab = 'support'">🎫 Soporte<span v-if="!licenseStore.hasSupport" style="font-size: 10px; margin-left: 4px;">🔒</span></button>
         <button class="tab-btn" :class="{ active: activeTab === 'ia' }" @click="activeTab = 'ia'">🤖 IA</button>
       </div>
     </div>
@@ -1337,7 +1344,19 @@ function formatBytes(bytes: number) {
     <!-- Sincronización Multi-Dispositivo -->
     <div v-if="activeTab === 'sync'" style="display: flex; align-items: center; justify-content: center; min-height: 480px; padding: 20px;">
       
-      <div v-if="syncConfig.provider === 'none'" style="background: #212121; width: 100%; max-width: 440px; border-radius: 12px; padding: 36px 40px; color: #fff; font-family: var(--font-sans); box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
+      <!-- Solo usuarios premium -->
+      <div v-if="!licenseStore.hasCloudSync" style="text-align: center; padding: 60px 20px; max-width: 500px;">
+        <div style="font-size: 64px; margin-bottom: 24px;">☁️</div>
+        <h3 style="margin-bottom: 12px;">Sincronización en la Nube</h3>
+        <p style="color: var(--text-muted); margin-bottom: 24px; max-width: 400px; margin-left: auto; margin-right: auto;">
+          Sincroniza tu información entre múltiples dispositivos. Disponible en planes Premium.
+        </p>
+        <a href="https://arkhegroup.com/precios" target="_blank" class="btn btn-primary" style="padding: 12px 32px; font-size: 16px;">
+          Actualizar a Premium
+        </a>
+      </div>
+
+      <div v-else-if="syncConfig.provider === 'none'" style="background: #212121; width: 100%; max-width: 440px; border-radius: 12px; padding: 36px 40px; color: #fff; font-family: var(--font-sans); box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
         <div style="display: flex; justify-content: center; margin-bottom: 24px;">
            <h2 style="font-size: 26px; font-weight: 700; margin: 0; color: #fff;">Iniciar sesión o registrarse</h2>
         </div>
@@ -1413,8 +1432,71 @@ function formatBytes(bytes: number) {
              Cerrar sesión
            </button>
          </div>
+       </div>
+    </div>
+
+    <!-- Soporte -->
+    <div v-if="activeTab === 'support'" class="fade-in">
+      <div class="card">
+        <h3 style="margin-bottom: 20px;">🎫 Sistema de Soporte</h3>
+        
+        <div v-if="licenseStore.hasSupport" style="padding: 20px;">
+          <div style="background: linear-gradient(135deg, #0D1B2A 0%, #1B263B 100%); border-radius: 12px; padding: 24px; margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+              <div style="width: 48px; height: 48px; background: #1B9AAA; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🎯</div>
+              <div>
+                <h4 style="margin: 0; color: #fff;">{{ licenseStore.planName }}</h4>
+                <p style="margin: 4px 0 0; color: #a1a1aa; font-size: 14px;">Tienes acceso a soporte prioritario</p>
+              </div>
+            </div>
+          </div>
+
+          <h4 style="margin-bottom: 16px;">Contactar al Equipo de Soporte</h4>
+          <p style="color: var(--text-muted); margin-bottom: 20px;">Nuestro equipo está disponible para ayudarte con cualquier duda o problema.</p>
+          
+          <div style="display: grid; gap: 16px;">
+            <a href="mailto:soporte@arkhegroup.com?subject=Soporte Arkhe Aula {{ licenseStore.planName }}" 
+               style="display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--bg); border-radius: 8px; text-decoration: none; color: inherit; border: 1px solid var(--border);">
+              <span style="font-size: 24px;">📧</span>
+              <div>
+                <div style="font-weight: 600;">Correo Electrónico</div>
+                <div style="font-size: 13px; color: var(--text-muted);">soporte@arkhegroup.com</div>
+              </div>
+            </a>
+            
+            <a href="https://arkhegroup.com/soporte" target="_blank"
+               style="display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--bg); border-radius: 8px; text-decoration: none; color: inherit; border: 1px solid var(--border);">
+              <span style="font-size: 24px;">🌐</span>
+              <div>
+                <div style="font-weight: 600;">Centro de Ayuda Online</div>
+                <div style="font-size: 13px; color: var(--text-muted);">FAQs, documentación y más</div>
+              </div>
+            </a>
+
+            <a href="https://wa.me/5218123400836?text=Hola%20necesito%20soporte%20para%20Arkhe%20Aula" target="_blank"
+               style="display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--bg); border-radius: 8px; text-decoration: none; color: inherit; border: 1px solid var(--border);">
+              <span style="font-size: 24px;">💬</span>
+              <div>
+                <div style="font-weight: 600;">WhatsApp</div>
+                <div style="font-size: 13px; color: var(--text-muted);">Chatea con nosotros</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div v-else style="text-align: center; padding: 60px 20px;">
+          <div style="font-size: 64px; margin-bottom: 24px;">🔒</div>
+          <h3 style="margin-bottom: 12px;">Soporte Prioritario</h3>
+          <p style="color: var(--text-muted); margin-bottom: 24px; max-width: 400px; margin-left: auto; margin-right: auto;">
+            ¿Tienes dudas o necesitas ayuda? Actualiza tu plan para obtener acceso a soporte prioritario.
+          </p>
+          <a href="https://arkhegroup.com/precios" target="_blank" class="btn btn-primary" style="padding: 12px 32px; font-size: 16px;">
+            Actualizar a Premium
+          </a>
+        </div>
       </div>
     </div>
+
     <!-- IA -->
     <div v-if="activeTab === 'ia'" class="fade-in">
       <div class="card">
