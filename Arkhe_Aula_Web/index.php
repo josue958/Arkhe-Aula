@@ -1,0 +1,163 @@
+<?php
+/**
+ * Arkhe Aula Web - Landing Page
+ * Arkhe Group © 2026
+ */
+$version = "1.12.8";
+$github_release = "https://github.com/josue958/Arkhe-Aula/releases/latest";
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arkhe Aula | Sistema de Evaluación Docente</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <img src="images/logo.png" alt="Arkhe Aula" onerror="this.src='https://via.placeholder.com/40?text=A'">
+                <span>Arkhe Aula</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#funcionalidad">Funcionalidad</a></li>
+                <li><a href="#descargas">Descargas</a></li>
+                <li><a href="#tienda" class="btn-shop">Tienda <i class="fas fa-shopping-cart"></i></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="inicio" class="hero">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <h1>El futuro de la <span>Evaluación Docente</span> ya está aquí.</h1>
+                <p>Gestiona grupos, alumnos, asistencias y calificaciones con una herramienta diseñada por maestros para maestros. Simple, rápida y profesional.</p>
+                <div class="hero-btns">
+                    <a href="#descargas" class="btn-primary">Descargar v<?php echo $version; ?></a>
+                    <a href="#funcionalidad" class="btn-secondary">Saber más</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="glass-card">
+                    <img src="images/preview.png" alt="Vista previa de Arkhe Aula" onerror="this.src='https://via.placeholder.com/600x400/1e293b/ffffff?text=Preview+App'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="funcionalidad" class="features">
+        <div class="container">
+            <h2 class="section-title">¿Qué puedes hacer con Arkhe Aula?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Gestión de Grupos</h3>
+                    <p>Organiza tus materias y estudiantes de forma intuitiva con perfiles detallados.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Asistencia Inteligente</h3>
+                    <p>Toma asistencia rápidamente y genera reportes automáticos por periodo.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Evaluación PDA</h3>
+                    <p>Seguimiento de Programas Didácticos de Aula con rúbricas personalizables.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-file-export"></i>
+                    <h3>Reportes en un clic</h3>
+                    <p>Exporta tus archivos en formatos profesionales listos para entregar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="descargas" class="download-zone">
+        <div class="container">
+            <div class="download-card">
+                <h2>Zona de Descargas</h2>
+                <p>Obtén la última versión estable para tu sistema operativo.</p>
+                <div class="platforms">
+                    <div class="p-item">
+                        <i class="fab fa-windows"></i>
+                        <span>Windows</span>
+                        <a href="<?php echo $github_release; ?>" class="btn-dl">Instalador .exe</a>
+                    </div>
+                    <div class="p-item">
+                        <i class="fab fa-apple"></i>
+                        <span>macOS (Universal)</span>
+                        <a href="<?php echo $github_release; ?>" class="btn-dl">Instalador .dmg</a>
+                    </div>
+                </div>
+                <p class="v-note">Versión actual: <?php echo $version; ?> | Incluye soporte para Intel y Apple Silicon.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tienda" class="shop">
+        <div class="container">
+            <h2 class="section-title">Adquiere tu Licencia Pro</h2>
+            <div class="shop-grid">
+                <div class="product-card">
+                    <div class="p-badge">Popular</div>
+                    <h3>Licencia Anual</h3>
+                    <div class="price">$499<span>MXN</span></div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Actualizaciones automáticas</li>
+                        <li><i class="fas fa-check"></i> Soporte técnico prioritario</li>
+                        <li><i class="fas fa-check"></i> Sincronización en la nube</li>
+                        <li><i class="fas fa-check"></i> Multidispositivo</li>
+                    </ul>
+                    <form action="checkout.php" method="POST">
+                        <input type="hidden" name="product_id" value="1">
+                        <button type="submit" class="btn-buy">Comprar ahora <i class="fas fa-arrow-right"></i></button>
+                    </form>
+                </div>
+                <div class="product-card premium">
+                    <h3>Licencia Vitalicia</h3>
+                    <div class="price">$1,299<span>MXN</span></div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Acceso de por vida</li>
+                        <li><i class="fas fa-check"></i> Todas las actualizaciones</li>
+                        <li><i class="fas fa-check"></i> Sin pagos mensuales</li>
+                        <li><i class="fas fa-check"></i> Soporte VIP</li>
+                    </ul>
+                    <form action="checkout.php" method="POST">
+                        <input type="hidden" name="product_id" value="2">
+                        <button type="submit" class="btn-buy">Comprar ahora <i class="fas fa-arrow-right"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="f-info">
+                    <h3>Arkhe Aula</h3>
+                    <p>Cerrando la brecha entre la docencia y la tecnología.</p>
+                </div>
+                <div class="f-links">
+                    <a href="#">Privacidad</a>
+                    <a href="#">Términos</a>
+                    <a href="#">Contacto</a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Arkhe Group. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
