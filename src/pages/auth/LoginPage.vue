@@ -14,6 +14,7 @@ const loading = ref(false)
 const error = ref('')
 const isBridgeReady = ref(false)
 const manualIp = ref('')
+const machineIdFromMain = ref('Generando...')
 const isMobile = computed(() => {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
 })
@@ -24,9 +25,11 @@ onMounted(() => {
   if (savedIp) manualIp.value = savedIp
 
   // Verificar si el bridge está listo
-  const check = setInterval(() => {
+  const check = setInterval(async () => {
     if ((window as any).electronAPI) {
       isBridgeReady.value = true
+      // @ts-ignore
+      machineIdFromMain.value = await window.electronAPI.getMachineId()
       clearInterval(check)
     }
   }, 500)
@@ -125,6 +128,32 @@ async function openReadme() {
     await window.electronAPI.openAdminReadme()
   }
 }
+
+const showActivationModal = ref(false)
+const activationData = reactive({ email: '', clave: '' })
+const isActivating = ref(false)
+
+async function handleActivation() {
+  if (!activationData.email || !activationData.clave) {
+    toastStore.warning('Por favor ingresa tu correo y clave de activación.')
+    return
+  }
+  isActivating.value = true
+  try {
+    // @ts-ignore
+    const result = await window.electronAPI.activateLicenseServer(activationData.email, activationData.clave)
+    if (result.success) {
+      toastStore.success(result.message)
+      showActivationModal.value = false
+    } else {
+      toastStore.error(result.message)
+    }
+  } catch (e: any) {
+    toastStore.error('Error al conectar con el servidor de licencias.')
+  } finally {
+    isActivating.value = false
+  }
+}
 </script>
 
 <template>
@@ -141,6 +170,24 @@ async function openReadme() {
         <img src="@/assets/logo.png" alt="Arkhe Aula" class="login-logo-img" style="width: 80px; height: 80px; filter: drop-shadow(0 0 20px rgba(99,102,241,0.6));" />
         <h1>Arkhe Aula</h1>
         <p>Sistema de Evaluación Docente</p>
+      </div>
+
+      <div class="login-auth-options" style="width: 100%; display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px;">
+        <button class="btn btn-social btn-google" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; background: #fff; color: #000; border: 1px solid #ddd;">
+          <img src="https://authjs.dev/img/providers/google.svg" width="20" height="20" /> Continuar con Google
+        </button>
+        <button class="btn btn-social btn-microsoft" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; background: #2f2f2f; color: #fff;">
+          <img src="https://authjs.dev/img/providers/microsoft.svg" width="20" height="20" /> Continuar con Microsoft
+        </button>
+        <button class="btn btn-social btn-apple" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; background: #000; color: #fff;">
+          <img src="https://authjs.dev/img/providers/apple.svg" width="20" height="20" /> Continuar con Apple
+        </button>
+      </div>
+
+      <div style="width: 100%; display: flex; align-items: center; gap: 10px; margin: 10px 0;">
+        <div style="flex: 1; height: 1px; background: var(--border);"></div>
+        <span style="font-size: 12px; color: var(--text-muted);">O con tu correo</span>
+        <div style="flex: 1; height: 1px; background: var(--border);"></div>
       </div>
 
       <!-- Tarjeta de login -->
@@ -219,6 +266,8 @@ async function openReadme() {
         <div class="login-actions" style="margin-top: 16px; display: flex; flex-direction: column; gap: 10px; text-align: center;">
           <a href="#" @click.prevent="recuperarClave" class="text-muted" style="font-size: 13px; text-decoration: underline;">¿Olvidaste tu contraseña?</a>
           <button type="button" class="btn btn-ghost" style="width: 100%; justify-content: center; font-size: 14px;" @click="showRegisterModal = true">Registrar nuevo usuario</button>
+          <div style="height: 1px; background: var(--border); margin: 8px 0;"></div>
+          <button type="button" class="btn btn-outline" style="width: 100%; justify-content: center; font-size: 14px; border: 1px solid var(--color-primary); color: var(--color-primary);" @click="showActivationModal = true">🔑 Activar Licencia de Software</button>
         </div>
       </div>
 
@@ -266,6 +315,37 @@ async function openReadme() {
             <button class="btn btn-primary" @click="handleResetPassword" :disabled="saving"><span v-if="saving" class="spinner"></span><span v-else>Cambiar Contraseña</span></button>
           </div>
         </div>
+
+      <!-- Modal: Activar Licencia -->
+      <div v-if="showActivationModal" class="modal-overlay" @click.self="showActivationModal = false">
+        <div class="modal" style="max-width: 400px;">
+          <div class="modal-header">
+            <h2>Activar Arkhe Aula</h2>
+            <button class="btn btn-ghost btn-icon" @click="showActivationModal = false">✕</button>
+          </div>
+          <div class="flex flex-col gap-4" style="padding: 20px;">
+            <p class="text-muted text-sm" style="line-height: 1.4;">Ingresa tu clave de activación recibida por correo para ligar este equipo a tu licencia.</p>
+            <div class="form-group">
+              <label class="form-label">Correo Asociado</label>
+              <input v-model="activationData.email" type="email" class="form-input" placeholder="correo@ejemplo.com" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Clave de Activación</label>
+              <input v-model="activationData.clave" type="text" class="form-input" placeholder="ARKHE-XXXX-XXXX-XXXX" style="letter-spacing: 1px; font-family: monospace;" />
+            </div>
+            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; font-size: 11px; color: var(--text-muted);">
+              ID de Equipo: <code style="color: var(--color-primary);">{{ machineIdFromMain }}</code>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" @click="showActivationModal = false">Cerrar</button>
+            <button class="btn btn-primary" @click="handleActivation" :disabled="isActivating">
+              <span v-if="isActivating" class="spinner"></span>
+              <span v-else>Validar y Activar</span>
+            </button>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   </div>

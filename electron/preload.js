@@ -222,7 +222,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
   removeUpdaterListeners: () => ipcRenderer.removeAllListeners('updater-event'),
   
   // ── ACTUALIZACIONES AUTOMÁTICAS ─────────────
-  getAutoUpdateConfig: () => ipcRenderer.invoke('auto-update-get-config'),
   saveAutoUpdateConfig: (enabled) => ipcRenderer.invoke('auto-update-save-config', enabled),
   checkAutoUpdateOnStart: () => ipcRenderer.invoke('auto-update-check-on-start'),
+
+  // ── LICENCIAS SERVIDOR ─────────────────────
+  getMachineId: () => ipcRenderer.invoke('license-get-fingerprint'),
+  activateLicenseServer: (email, clave) => ipcRenderer.invoke('license-activate-server', { email, clave }),
+  verifyLicenseServer: () => ipcRenderer.invoke('license-verify-server'),
 });

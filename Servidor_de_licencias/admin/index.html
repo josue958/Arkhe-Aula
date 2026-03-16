@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Arkhe License Server</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background: #eee; }
+        .status-activa { color: green; font-weight: bold; }
+        .status-pendiente { color: orange; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; }
+        .btn-add { background: #4CAF50; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Administración de Licencias Arkhe</h1>
+        <button class="btn btn-add">Generar Nueva Licencia</button>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Clave</th>
+                    <th>Dispositivo (ID)</th>
+                    <th>Expira</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="licenses-table">
+                <!-- Data will be loaded here -->
+                <tr>
+                    <td>demo@arkhegroup.com</td>
+                    <td><code>ARKHE-1234-ABCD-8899</code></td>
+                    <td>-</td>
+                    <td>2027-01-01</td>
+                    <td><span class="status-pendiente">Pendiente</span></td>
+                    <td>
+                        <button onclick="alert('Funcionalidad en desarrollo')">Bloquear</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

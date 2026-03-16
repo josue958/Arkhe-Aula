@@ -24,9 +24,10 @@ git checkout desarrollo
 # Crea un archivo .env en la raíz y añade:
 # GH_TOKEN=tu_token_de_github
 
-# 3. Lanza el release completo (AUTOMÁTICO Y PÚBLICO)
-# Esto: Compila (Win/Mac) -> Organiza Versión -> Commit -> Tag -> Pública en GitHub directamente
+# 3. Lanza el release completo (AUTOMÁTICO, PÚBLICO Y OFUSCADO)
+# Esto: Compila (Win/Mac) -> Ofusca Código -> Organiza Versión -> Commit -> Tag -> Pública en GitHub directamente
 # El release se crea como PÚBLICO para que todos puedan descargarlo sin contraseña.
+# Además, el código se ofusca automáticamente para proteger la propiedad intelectual.
 npm run release
 ```
 
@@ -45,6 +46,7 @@ npm run build
 ```
 
 - Construye para ambas plataformas (Windows y macOS)
+- **Ofusca el código fuente** de Electron (`electron/*.js`) automáticamente
 - Genera instaladores y versiones portables
 - Ejecuta post-build scripts
 
@@ -160,6 +162,14 @@ Ejecutables/
 1. **Releases:** https://github.com/josue958/Arkhe-Aula/releases
    - Verifica que el release v{VERSION} está activo y con todos sus archivos.
    - Revisa que los clientes reciban la actualización automática.
+   - **IMPORTANTE:** Verifica que el código en el ejecutable esté ofuscado.
+
+### 7. Integración con Servidor de Licencias (NUEVO v1.15.0)
+
+Desde la versión 1.15.0, el software requiere activación por licencia.
+- El servidor de licencias gestiona claves, activaciones y desvinculación de dispositivos.
+- El software puede trabajar **offline** una vez activado (valida localmente con `license.dat` cifrado).
+- Las actualizaciones automáticas no requieren licencia, pero el uso de la App sí.
 
 **Verifica en la aplicación:**
 

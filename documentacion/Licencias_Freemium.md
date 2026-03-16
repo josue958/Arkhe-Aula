@@ -151,6 +151,49 @@ Muestra un banner en la parte superior de la aplicación cuando el usuario tiene
 
 **Integración:** Se importa en `src/layouts/AppLayout.vue`
 
+### Pestaña de Soporte (SettingsPage)
+
+**Ubicación:** `src/pages/settings/SettingsPage.vue`
+
+- Nuevo tab "🎫 Soporte" en Configuración
+- Solo visible para usuarios con `licenseStore.hasSupport === true`
+- Canales de contacto:
+  - Email: soporte@arkhegroup.com
+  - Centro de ayuda online
+  - WhatsApp
+
+### Pestaña de Sincronización
+
+La pestaña de sincronización ahora valida la licencia:
+
+- Si `licenseStore.hasCloudSync === false`: Muestra mensaje de upgrade
+- Si `licenseStore.hasCloudSync === true`: Muestra opciones de sync
+
+---
+
+## Funcionalidades Premium
+
+### Sincronización en la Nube
+
+La funcionalidad de sync permite:
+- Conectar con Google Drive, Apple iCloud, Microsoft OneDrive
+- Respaldar base de datos automáticamente
+- Sincronizar entre múltiples dispositivos
+
+**Proveedores disponibles:**
+- Firebase (Google)
+- CloudKit (Apple)
+- Microsoft Graph (OneDrive)
+
+**Handler IPC:** `sync-set-provider`, `sync-push`, `sync-pull`, `sync-backup-db`
+
+### Sistema de Soporte
+
+Permite a usuarios Premium contactar al equipo de Arkhe:
+- Correo electrónico directo
+- Centro de ayuda online
+- WhatsApp para soporte rápido
+
 ---
 
 ## Activación de Licencias

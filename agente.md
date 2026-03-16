@@ -11,7 +11,7 @@
 | **Sistema** | Arkhe Aula |
 | **Empresa** | Arkhe Systems |
 | **Descripción** | Sistema de Evaluación Docente para Escritorio |
-| **Versión**     | 1.14.0                                        |
+| **Versión** | 1.15.0 |
 
 ---
 
@@ -21,10 +21,24 @@
 
 | Plan | Grupos | Alumnos | Características |
 |------|--------|---------|----------------|
-| **Free** | 3 | 40 | Asistencia, Evaluación básica, PDA, Equipos, Sin reportes |
+| **Free** | 3 | 40 | Asistencia, Evaluación básica, PDA, Equipos, Sin reportes, Sin sync, Sin soporte |
 | **Básico** | 10 | 150 | Todo Free + Reportes básicos |
-| **Premium** | Ilimitado | Ilimitado | Todo Básico + Evaluación avanzada, Sync en la nube, Soporte |
+| **Premium** | Ilimitado | Ilimitado | Todo Básico + Sync en la nube + Soporte |
 | **Enterprise** | Ilimitado | Ilimitado | Todo Premium + Soporte prioritario |
+
+### Features por Plan
+
+| Feature | Free | Basic | Premium | Enterprise |
+|---------|------|-------|---------|------------|
+| Grupos | 3 | 10 | ∞ | ∞ |
+| Alumnos | 40 | 150 | ∞ | ∞ |
+| Asistencia | ✅ | ✅ | ✅ | ✅ |
+| Evaluación básica | ✅ | ✅ | ✅ | ✅ |
+| PDA | ✅ | ✅ | ✅ | ✅ |
+| Equipos | ✅ | ✅ | ✅ | ✅ |
+| Reportes | ❌ | ✅ | ✅ | ✅ |
+| Sync en la Nube | ❌ | ❌ | ✅ | ✅ |
+| Soporte | ❌ | ❌ | ✅ | ✅ |
 
 ### Tabla de Licencias (BD)
 ```sql
@@ -495,8 +509,8 @@ src/
 
 #### Componentes Vue
 
-##### Estructura Base
-```vue
+##### v1.1.0 - Estructura Inicial
+```sql
 <script setup lang="ts">
 // Imports
 import { ref, computed } from 'vue'
@@ -1871,9 +1885,14 @@ SUBIR AL SERVIDOR (si es release)
 
 ---
 
-### Feature: Modelo Freemium + Suscripción
+### v1.15.0 - Servidor de Licencias y Social Login
+- Se implementó el **Servidor de Licencias** externo con base de datos MySQL.
+- Se agregó el módulo de **Activación por Clave** con validación de Fingerprint de equipo.
+- Se implementó la encriptación local `license.dat` para trabajo offline.
+- Se integraron botones de **Social Login** (Google, Microsoft, Apple) en la pantalla de inicio.
+- Se añadió el script de **Obfuscación** (`javascript-obfuscator`) para proteger el código fuente en producción.
 
-#### Descripción
+#### Descripción del Sistema de Licencias (Modelo Freemium)
 Se implementó el sistema de licencias y suscripción para el modelo de negocio Freemium:
 
 1. **Tabla de licencias en BD** (`electron/database.js`):

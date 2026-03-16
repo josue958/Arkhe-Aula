@@ -2,7 +2,9 @@ const { app, BrowserWindow, Menu, ipcMain, dialog, session } = require('electron
 const path = require('path');
 const fs = require('fs');
 const { initUpdater, checkForUpdatesOnStart } = require('./updater');
+const { initLicensing } = require('./licensing');
 const logger = require('./logger');
+const axios = require('axios');
 
 let mainWindow;
 const isDev = process.env.NODE_ENV === 'development';
@@ -80,6 +82,7 @@ function createWindow() {
     // Inicializar sistema de actualizaciones
     initUpdater(mainWindow);
     checkForUpdatesOnStart();
+    initLicensing();
   });
 
   // En desarrollo usa Vite dev server; en producción, los archivos compilados
