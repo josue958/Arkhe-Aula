@@ -298,7 +298,8 @@ function createMenu() {
 // ───────────────────────────────────────────────
 // Handlers IPC básicos del proceso principal
 // ───────────────────────────────────────────────
-ipcMain.handle('get-app-version', () => app.getVersion());
+// Redundante: ya se registra en updater.js
+// ipcMain.handle('get-app-version', () => app.getVersion());
 ipcMain.handle('get-platform', () => process.platform);
 ipcMain.handle('get-user-data-path', () => app.getPath('userData'));
 ipcMain.handle('get-local-ip', () => {

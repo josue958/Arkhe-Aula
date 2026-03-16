@@ -125,72 +125,41 @@ if (fs.existsSync(agentePath)) {
   console.warn('⚠️  No se encontró agente.md');
 }
 
-// ── PUBLICAR AUTOMÁTICAMENTE A GITHUB RELEASES ─────────────────────────────
-console.log('\n🚀 Preparando publicación automática a GitHub Releases...\n');
+// ── GESTIÓN DE COMMITS Y TAGS ──────────────────────────────────────────────
+console.log('\n📝 Actualizando repositorio local (commits y tags)...\n');
 
 const { execSync } = require('child_process');
 
 try {
-  // 1. Verificar que estamos en la rama main
-  const currentBranch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
-  console.log(`📍 Rama actual: ${currentBranch}`);
-
-  if (currentBranch !== 'main') {
-    console.log('⚠️  No estás en la rama main. Saltando publicación automática.');
-    console.log('   Para publicar manualmente, ejecuta: npm run release');
-  } else {
-    // 2. Hacer commit de los cambios (si los hay)
-    try {
-      execSync('git add -A', { stdio: 'pipe' });
-      execSync('git commit -m "chore: build v' + version + '"', { stdio: 'pipe' });
-      console.log('✅ Cambios commiteados');
-    } catch (e) {
-      console.log('ℹ️  No hay cambios para commitear o ya están commiteados');
-    }
-
-    // 3. Crear tag de la versión
-    const tagName = `v${version}`;
-    try {
-      execSync(`git tag -a ${tagName} -m "Release ${tagName}"`, { stdio: 'pipe' });
-      console.log(`✅ Tag creado: ${tagName}`);
-    } catch (e) {
-      if (e.message.includes('already exists')) {
-        console.log(`⚠️  El tag ${tagName} ya existe. Eliminando y recreando...`);
-        execSync(`git tag -d ${tagName}`, { stdio: 'pipe' });
-        execSync(`git tag -a ${tagName} -m "Release ${tagName}"`, { stdio: 'pipe' });
-        console.log(`✅ Tag recreado: ${tagName}`);
-      } else {
-        throw e;
-      }
-    }
-
-    // 4. Hacer push de commits y tags a GitHub
-    console.log('📤 Subiendo a GitHub (commits + tags)...');
-    execSync('git push origin main --follow-tags', { stdio: 'inherit' });
-    console.log('✅ Push completado a GitHub');
-
-    // 5. Instrucciones finales
-    console.log('\n' + '='.repeat(60));
-    console.log('🎉 ¡BUILD Y PUBLICACIÓN COMPLETADOS!');
-    console.log('='.repeat(60));
-    console.log('\n📦 GitHub Actions está compilando tu release...');
-    console.log('   👉 https://github.com/josue958/Arkhe-Aula/actions\n');
-    console.log('⏱️  El proceso tomará ~15-25 minutos.');
-    console.log('\n📝 Cuando termine:');
-    console.log('   1. Ve a Releases en GitHub');
-    console.log('   2. Revisa el release draft v' + version);
-    console.log('   3. Publica el release cuando estés listo\n');
-    console.log('🔗 Release Draft:');
-    console.log('   https://github.com/josue958/Arkhe-Aula/releases\n');
-    console.log('='.repeat(60) + '\n');
+  // 1. Commit de los cambios (agente.md, etc)
+  try {
+    execSync('git add -A', { stdio: 'pipe' });
+    execSync(`git commit -m "chore: build v${version}"`, { stdio: 'pipe' });
+    console.log('✅ Cambios commiteados localmente.');
+  } catch (e) {
+    console.log('ℹ️  No hay cambios pendientes para commitear.');
   }
+
+  // 2. Manejo de Tag
+  const tagName = `v${version}`;
+  try {
+    execSync(`git tag -a ${tagName} -m "Release ${tagName}"`, { stdio: 'pipe' });
+    console.log(`✅ Tag local creado: ${tagName}`);
+  } catch (e) {
+    if (e.message.includes('already exists')) {
+      console.log(`⚠️  El tag ${tagName} ya existe localmente.`);
+    } else {
+      console.warn(`⚠️  No se pudo crear el tag: ${e.message}`);
+    }
+  }
+
+  console.log('\n🚀 Compilación local terminada con éxito.');
+  console.log('💡 Si quieres subir los archivos a GitHub ahora, ejecuta:');
+  console.log('   npm run upload:github\n');
+
 } catch (error) {
-  console.error('\n❌ Error al publicar a GitHub:');
+  console.error('\n❌ Error en el proceso post-compilación:');
   console.error(error.message);
-  console.error('\n💡 Solución:');
-  console.error('   1. Verifica que tienes un token GH_TOKEN válido');
-  console.error('   2. Verifica que estás en la rama main');
-  console.error('   3. Intenta publicar manualmente con: npm run release\n');
 }
 
 // Mostrar resumen
