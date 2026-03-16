@@ -1,11 +1,3 @@
-<?php
-/**
- * Arkhe Aula Web - Landing Page
- * Arkhe Group © 2026
- */
-$version = "1.12.8";
-$github_release = "https://github.com/josue958/Arkhe-Aula/releases/latest";
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -40,7 +32,7 @@ $github_release = "https://github.com/josue958/Arkhe-Aula/releases/latest";
                 <h1>El futuro de la <span>Evaluación Docente</span> ya está aquí.</h1>
                 <p>Gestiona grupos, alumnos, asistencias y calificaciones con una herramienta diseñada por maestros para maestros. Simple, rápida y profesional.</p>
                 <div class="hero-btns">
-                    <a href="#descargas" class="btn-primary">Descargar v<?php echo $version; ?></a>
+                    <a href="#descargas" class="btn-primary">Descargar v1.12.8</a>
                     <a href="#funcionalidad" class="btn-secondary">Saber más</a>
                 </div>
             </div>
@@ -89,15 +81,15 @@ $github_release = "https://github.com/josue958/Arkhe-Aula/releases/latest";
                     <div class="p-item">
                         <i class="fab fa-windows"></i>
                         <span>Windows</span>
-                        <a href="<?php echo $github_release; ?>" class="btn-dl">Instalador .exe</a>
+                        <a href="https://github.com/josue958/Arkhe-Aula/releases/latest" class="btn-dl">Instalador .exe</a>
                     </div>
                     <div class="p-item">
                         <i class="fab fa-apple"></i>
                         <span>macOS (Universal)</span>
-                        <a href="<?php echo $github_release; ?>" class="btn-dl">Instalador .dmg</a>
+                        <a href="https://github.com/josue958/Arkhe-Aula/releases/latest" class="btn-dl">Instalador .dmg</a>
                     </div>
                 </div>
-                <p class="v-note">Versión actual: <?php echo $version; ?> | Incluye soporte para Intel y Apple Silicon.</p>
+                <p class="v-note">Versión actual: 1.12.8 | Incluye soporte para Intel y Apple Silicon.</p>
             </div>
         </div>
     </section>
@@ -116,10 +108,7 @@ $github_release = "https://github.com/josue958/Arkhe-Aula/releases/latest";
                         <li><i class="fas fa-check"></i> Sincronización en la nube</li>
                         <li><i class="fas fa-check"></i> Multidispositivo</li>
                     </ul>
-                    <form action="checkout.php" method="POST">
-                        <input type="hidden" name="product_id" value="1">
-                        <button type="submit" class="btn-buy">Comprar ahora <i class="fas fa-arrow-right"></i></button>
-                    </form>
+                    <a href="checkout.html?id=1" class="btn-buy">Comprar ahora <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="product-card premium">
                     <h3>Licencia Vitalicia</h3>
@@ -130,10 +119,7 @@ $github_release = "https://github.com/josue958/Arkhe-Aula/releases/latest";
                         <li><i class="fas fa-check"></i> Sin pagos mensuales</li>
                         <li><i class="fas fa-check"></i> Soporte VIP</li>
                     </ul>
-                    <form action="checkout.php" method="POST">
-                        <input type="hidden" name="product_id" value="2">
-                        <button type="submit" class="btn-buy">Comprar ahora <i class="fas fa-arrow-right"></i></button>
-                    </form>
+                    <a href="checkout.html?id=2" class="btn-buy">Comprar ahora <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
