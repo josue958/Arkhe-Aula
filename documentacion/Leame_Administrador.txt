@@ -1,0 +1,30 @@
+===============================================
+ARKHE AULA - SISTEMA DE EVALUACIÓN DOCENTE
+INFORMACIÓN PARA EL ADMINISTRADOR
+===============================================
+
+Este archivo contiene la información confidencial de acceso inicial 
+para la instalación del sistema en modo local.
+
+-----------------------------------------------
+CREDENCIALES DE SISTEMA POR DEFECTO
+-----------------------------------------------
+Usuario:  admin@arkhe.local
+Clave:    admin123
+-----------------------------------------------
+
+IMPORTANTE:
+- Para cambiar la contraseña del administrador, ingrese al sistema
+  y diríjase al módulo de configuración de su cuenta o desde 
+  el apartado de usuarios en el menú.
+- Guarde este documento en un lugar seguro y no lo comparta
+  con el cuerpo docente, ya que podrían obtener permisos
+  completos para borrar alumnos, grupos o métricas escolares.
+
+-----------------------------------------------
+¿Olvidó su contraseña y no la recuerda?
+-----------------------------------------------
+Al ser un sistema local, no interviene una nube recuperadora,
+sin embargo, un administrador de red puede reiniciar el archivo 
+"database.sqlite" del equipo borrándolo y arrancando la app 
+de nuevo, lo que reinicia todos los datos a cero.

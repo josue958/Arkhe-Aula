@@ -1,0 +1,79 @@
+
+> arkhe-aula@1.3.0 build
+> npm run build:vite && electron-builder build --win --mac
+
+
+> arkhe-aula@1.3.0 build:vite
+> vite build
+
+vite v6.4.1 building for production...
+transforming...
+[plugin vite:esbuild] src/pages/groups/GroupsPage.vue?vue&type=script&setup=true&lang.ts: Duplicate key "period_ids" in object literal
+176|    current_period: 1,
+177|      period_ids: [],
+178|    period_ids: [] as number[],
+   |    ^
+179|    period_start_date: '',
+180|    period_end_date: '',
+
+✓ 83 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                   1.00 kB │ gzip:   0.53 kB
+dist/assets/logo-CgY-5W8L.png                 4,903.48 kB
+dist/assets/AttendancePage-z2tIXEz2.css           0.06 kB │ gzip:   0.07 kB
+dist/assets/EvaluationPage-DLWzb4mJ.css           0.06 kB │ gzip:   0.07 kB
+dist/assets/SubjectsPage-BKv9PTD0.css             0.06 kB │ gzip:   0.07 kB
+dist/assets/GroupsPage-D2R-e5ZN.css               0.14 kB │ gzip:   0.14 kB
+dist/assets/StudentsPage-Dt5_WRuD.css             0.26 kB │ gzip:   0.22 kB
+dist/assets/AppLayout-D2vCpydp.css                0.32 kB │ gzip:   0.17 kB
+dist/assets/DashboardPage-ChDsLKpb.css            0.50 kB │ gzip:   0.29 kB
+dist/assets/SettingsPage-BrQZsL3f.css             0.63 kB │ gzip:   0.32 kB
+dist/assets/TakeAttendancePage-BX0KRaMv.css       0.68 kB │ gzip:   0.33 kB
+dist/assets/LoginPage-h_v9wAD1.css                2.13 kB │ gzip:   0.77 kB
+dist/assets/main-DXG_8ICU.css                    12.95 kB │ gzip:   3.53 kB
+dist/assets/logo-CM7sldb4.js                      0.08 kB │ gzip:   0.10 kB
+dist/assets/SubjectsPage-vkpPjhph.js              1.93 kB │ gzip:   1.07 kB
+dist/assets/EvaluationPage-BfrXkFHV.js            2.11 kB │ gzip:   1.17 kB
+dist/assets/AttendancePage-1VYGw5gM.js            2.19 kB │ gzip:   1.18 kB
+dist/assets/AppLayout-rCFL6aVB.js                 3.79 kB │ gzip:   1.62 kB
+dist/assets/ProfilePage-B5lgI_QN.js               4.17 kB │ gzip:   1.67 kB
+dist/assets/AttendanceReportPage-EorAO6G5.js      4.45 kB │ gzip:   1.89 kB
+dist/assets/TakeAttendancePage-JCAnIDsx.js        5.02 kB │ gzip:   2.07 kB
+dist/assets/DashboardPage-CCJfKe2o.js             5.47 kB │ gzip:   2.06 kB
+dist/assets/ReportsPage-BHlGFVo3.js               6.20 kB │ gzip:   2.37 kB
+dist/assets/AdminPage-ugiB75Ud.js                 6.51 kB │ gzip:   2.18 kB
+dist/assets/GradesPage-MjyL0St2.js                7.35 kB │ gzip:   2.92 kB
+dist/assets/LoginPage-C9tJRCDe.js                 8.03 kB │ gzip:   2.69 kB
+dist/assets/GroupsPage-SlVJQuvf.js               17.15 kB │ gzip:   4.70 kB
+dist/assets/StudentsPage-CVQvhuy3.js             21.42 kB │ gzip:   6.16 kB
+dist/assets/SettingsPage-BG14zhue.js             54.83 kB │ gzip:  11.20 kB
+dist/assets/main-AyKX0nWP.js                    109.87 kB │ gzip:  42.72 kB
+dist/assets/xlsx-BBWTpfDg.js                    424.73 kB │ gzip: 140.57 kB
+✓ built in 8.92s
+  • electron-builder  version=24.13.3 os=25.3.0
+  • loaded configuration  file=package.json ("build" field)
+  • rebuilding native dependencies  dependencies=better-sqlite3@8.2.0 platform=darwin arch=arm64
+  • install prebuilt binary  name=better-sqlite3 version=8.2.0 platform=darwin arch=arm64 napi=
+  • packaging       platform=darwin arch=arm64 electron=22.3.27 appOutDir=Ejecutables/mac-arm64
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • skipped macOS code signing  reason=identity explicitly is set to null
+  • building        target=DMG arch=arm64 file=Ejecutables/Arkhe Aula-1.3.0-arm64.dmg
+  • building        target=macOS zip arch=arm64 file=Ejecutables/Arkhe Aula-1.3.0-arm64-mac.zip
+  • rebuilding native dependencies  dependencies=better-sqlite3@8.2.0 platform=win32 arch=x64
+  • install prebuilt binary  name=better-sqlite3 version=8.2.0 platform=win32 arch=x64 napi=
+  • Detected arm64 process, HFS+ is unavailable. Creating dmg with APFS - supports Mac OSX 10.12+
+  • packaging       platform=win32 arch=x64 electron=22.3.27 appOutDir=Ejecutables/win-unpacked
+  • building block map  blockMapFile=Ejecutables/Arkhe Aula-1.3.0-arm64-mac.zip.blockmap
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • rebuilding native dependencies  dependencies=better-sqlite3@8.2.0 platform=win32 arch=ia32
+  • install prebuilt binary  name=better-sqlite3 version=8.2.0 platform=win32 arch=ia32 napi=
+  • packaging       platform=win32 arch=ia32 electron=22.3.27 appOutDir=Ejecutables/win-ia32-unpacked
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • building block map  blockMapFile=Ejecutables/Arkhe Aula-1.3.0-arm64.dmg.blockmap
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • building        target=nsis file=Ejecutables/Arkhe Aula Setup 1.3.0.exe archs=x64, ia32 oneClick=false perMachine=false
+  • building block map  blockMapFile=Ejecutables/Arkhe Aula Setup 1.3.0.exe.blockmap
+  • building        target=portable file=Ejecutables/Arkhe Aula-Portable-1.3.0.exe archs=x64

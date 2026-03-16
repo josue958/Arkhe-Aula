@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arkhe Aula - Descargas</title>
+  <meta name="description" content="Descarga la última versión de Arkhe Aula, el sistema de evaluación docente para escritorio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --bg: #0a0f1e;
+      --bg-card: #111827;
+      --bg-elevated: #1a2236;
+      --border: rgba(255,255,255,0.08);
+      --primary: #6366f1;
+      --primary-glow: rgba(99,102,241,0.4);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --win-color: #0078d4;
+      --mac-color: #a3a3a3;
+      --success: #10b981;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), #a855f7);
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-bottom: 16px;
+      box-shadow: 0 0 30px var(--primary-glow);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #fff, var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 24px;
+    }
+
+    .version-badge {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .downloads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .download-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .download-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 20px var(--primary-glow);
+      transform: translateY(-2px);
+    }
+
+    .download-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .os-icon {
+      font-size: 32px;
+    }
+
+    .os-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .download-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .download-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .download-item:hover {
+      background: var(--bg-elevated);
+      border-color: var(--primary);
+    }
+
+    .download-info {
+      flex: 1;
+    }
+
+    .download-name {
+      font-weight: 500;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .download-size {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .download-btn {
+      background: var(--primary);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      white-space: nowrap;
+      margin-left: 12px;
+    }
+
+    .download-btn:hover {
+      background: #4f46e5;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .download-btn.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+    }
+
+    .download-btn.secondary:hover {
+      border-color: var(--primary);
+      background: var(--primary);
+    }
+
+    .info-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+
+    .info-section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .info-section ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .info-section li {
+      padding: 8px 0;
+      color: var(--text-muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .info-section li::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--color-danger);
+      color: #f87171;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      h1 { font-size: 2rem; }
+      .downloads-grid { grid-template-columns: 1fr; }
+      .download-item { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .download-btn { margin-left: 0; width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">📚</div>
+      <h1>Arkhe Aula</h1>
+      <p class="subtitle">Sistema de Evaluación Docente para Escritorio</p>
+      <div id="version-badge" class="version-badge" style="display: none;">
+        Última versión: <span id="version-number">Cargando...</span>
+      </div>
+    </header>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Cargando descargas disponibles...</p>
+    </div>
+
+    <div id="error" class="error-message" style="display: none;"></div>
+
+    <div id="downloads" class="downloads-grid" style="display: none;">
+      <!-- Windows -->
+      <div class="download-card">
+        <div class="download-card-header">
+          <span class="os-icon">🪟</span>
+          <span class="os-name">Windows</span>
+        </div>
+        <div class="download-list">
+          <div id="win-installer" class="download-item" style="display: none;">
+            <div class="download-info">
+              <div class="download-name">Instalador (.exe)</div>
+              <div class="download-size" id="win-installer-size"></div>
+            </div>
+            <a id="win-installer-btn" class="download-btn" href="#" download>Descargar</a>
+          </div>
+          <div id="win-portable" class="download-item" style="display: none;">
+            <div class="download-info">
+              <div class="download-name">Portable (.exe)</div>
+              <div class="download-size" id="win-portable-size"></div>
+            </div>
+            <a id="win-portable-btn" class="download-btn secondary" href="#" download>Descargar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- macOS -->
+      <div class="download-card">
+        <div class="download-card-header">
+          <span class="os-icon">🍎</span>
+          <span class="os-name">macOS</span>
+        </div>
+        <div class="download-list">
+          <div id="mac-intel" class="download-item" style="display: none;">
+            <div class="download-info">
+              <div class="download-name">Intel (x64) .dmg</div>
+              <div class="download-size" id="mac-intel-size"></div>
+            </div>
+            <a id="mac-intel-btn" class="download-btn" href="#" download>Descargar</a>
+          </div>
+          <div id="mac-arm" class="download-item" style="display: none;">
+            <div class="download-info">
+              <div class="download-name">Apple Silicon (M1/M2) .dmg</div>
+              <div class="download-size" id="mac-arm-size"></div>
+            </div>
+            <a id="mac-arm-btn" class="download-btn" href="#" download>Descargar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>📋 Requisitos del Sistema</h2>
+      <ul>
+        <li><strong>Windows:</strong> Windows 10 o superior (64-bit)</li>
+        <li><strong>macOS:</strong> macOS 10.12 (Sierra) o superior</li>
+        <li><strong>RAM:</strong> 4 GB mínimo (8 GB recomendado)</li>
+        <li><strong>Almacenamiento:</strong> 500 MB libres</li>
+        <li><strong>Internet:</strong> No requerido para uso básico</li>
+      </ul>
+    </div>
+
+    <div class="info-section">
+      <h2>🔄 Actualizaciones Automáticas</h2>
+      <p style="color: var(--text-muted); line-height: 1.6;">
+        Arkhe Aula verifica automáticamente si hay nuevas versiones al iniciar la aplicación. 
+        Cuando hay una actualización disponible, se te notificará y podrás descargarla e 
+        instalarla con un solo clic. Las actualizaciones se descargan directamente desde 
+        GitHub Releases.
+      </p>
+    </div>
+
+    <div class="info-section">
+      <h2>📞 Soporte</h2>
+      <ul>
+        <li>¿Problemas con la instalación? <a href="mailto:soporte@arkhegroup.com">Contacta a soporte</a></li>
+        <li>¿Necesitas ayuda? <a href="https://github.com/josue958/Arkhe-Aula/issues" target="_blank">Reporta un issue</a></li>
+        <li>¿Quieres ver el código? <a href="https://github.com/josue958/Arkhe-Aula" target="_blank">Visita el repositorio</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <p>Arkhe Aula v<span id="footer-version">-</span> — Arkhe Group © 2026</p>
+    <p style="margin-top: 8px;">
+      <a href="https://github.com/josue958/Arkhe-Aula" target="_blank">GitHub</a> •
+      <a href="https://arkhegroup.com" target="_blank">Sitio Web</a>
+    </p>
+  </footer>
+
+  <script>
+    const GITHUB_OWNER = 'josue958';
+    const GITHUB_REPO = 'Arkhe-Aula';
+
+    // Formatear tamaño de archivo
+    function formatSize(bytes) {
+      if (bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    }
+
+    // Identificar tipo de archivo
+    function getFileType(filename) {
+      if (filename.includes('Setup') && filename.endsWith('.exe')) return 'win-installer';
+      if (filename.includes('Portable') && filename.endsWith('.exe')) return 'win-portable';
+      if (filename.endsWith('.dmg') && !filename.includes('arm64')) return 'mac-intel';
+      if (filename.endsWith('.dmg') && filename.includes('arm64')) return 'mac-arm';
+      if (filename.endsWith('.zip') && !filename.includes('arm64')) return 'mac-intel-zip';
+      if (filename.endsWith('.zip') && filename.includes('arm64')) return 'mac-arm-zip';
+      return null;
+    }
+
+    // Cargar releases desde GitHub
+    async function loadReleases() {
+      try {
+        const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`);
+        
+        if (!response.ok) {
+          throw new Error('No se pudo obtener la información de GitHub');
+        }
+
+        const data = await response.json();
+        
+        // Actualizar versión
+        document.getElementById('version-number').textContent = data.tag_name;
+        document.getElementById('footer-version').textContent = data.tag_name.replace('v', '');
+        document.getElementById('version-badge').style.display = 'inline-block';
+
+        // Procesar assets
+        const files = {
+          'win-installer': null,
+          'win-portable': null,
+          'mac-intel': null,
+          'mac-arm': null
+        };
+
+        data.assets.forEach(asset => {
+          const type = getFileType(asset.name);
+          if (type && files[type]) {
+            files[type] = asset;
+          }
+        });
+
+        // Mostrar Windows Installer
+        if (files['win-installer']) {
+          document.getElementById('win-installer').style.display = 'flex';
+          document.getElementById('win-installer-btn').href = files['win-installer'].browser_download_url;
+          document.getElementById('win-installer-size').textContent = formatSize(files['win-installer'].size);
+        }
+
+        // Mostrar Windows Portable
+        if (files['win-portable']) {
+          document.getElementById('win-portable').style.display = 'flex';
+          document.getElementById('win-portable-btn').href = files['win-portable'].browser_download_url;
+          document.getElementById('win-portable-size').textContent = formatSize(files['win-portable'].size);
+        }
+
+        // Mostrar macOS Intel
+        if (files['mac-intel']) {
+          document.getElementById('mac-intel').style.display = 'flex';
+          document.getElementById('mac-intel-btn').href = files['mac-intel'].browser_download_url;
+          document.getElementById('mac-intel-size').textContent = formatSize(files['mac-intel'].size);
+        }
+
+        // Mostrar macOS ARM
+        if (files['mac-arm']) {
+          document.getElementById('mac-arm').style.display = 'flex';
+          document.getElementById('mac-arm-btn').href = files['mac-arm'].browser_download_url;
+          document.getElementById('mac-arm-size').textContent = formatSize(files['mac-arm'].size);
+        }
+
+        // Mostrar descargas
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('downloads').style.display = 'grid';
+
+      } catch (error) {
+        console.error('Error loading releases:', error);
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+        document.getElementById('error').textContent = 'Error al cargar las descargas: ' + error.message;
+      }
+    }
+
+    // Cargar al iniciar
+    loadReleases();
+  </script>
+</body>
+</html>

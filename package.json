@@ -1,0 +1,173 @@
+{
+  "name": "arkhe-aula",
+  "version": "1.12.7",
+  "description": "Arkhe Aula — Sistema de Evaluación Docente para Escritorio",
+  "main": "electron/main.js",
+  "author": "Arkhe Group",
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "dev:vite": "vite",
+    "dev:ipad": "concurrently \"vite --host\" \"npm run dev:electron\"",
+    "dev:electron": "wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .",
+    "build:vite": "vite build",
+    "build": "npm run build:vite && electron-builder build --win --mac && node scripts/post-build.js",
+    "build:win": "npm run build:vite && electron-builder build --win && node scripts/post-build.js",
+    "build:mac": "npm run build:vite && electron-builder build --mac && node scripts/post-build.js",
+    "build:all": "npm run build",
+    "postinstall": "electron-builder install-app-deps",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "release": "npm run build:vite && electron-builder build --win --mac --publish always",
+    "release:win": "npm run build:vite && electron-builder build --win --publish always",
+    "release:mac": "npm run build:vite && electron-builder build --mac --publish always",
+    "release:draft": "npm run build:vite && electron-builder build --win --mac --publish onTagOrDraft"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/vue": "^8.1.0",
+    "@types/file-saver": "^2.0.7",
+    "@types/qrcode": "^1.5.6",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "@vitest/coverage-v8": "^4.1.0",
+    "@vitest/ui": "^4.1.0",
+    "@vue/test-utils": "^2.4.6",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^22.3.27",
+    "electron-builder": "^24.13.3",
+    "happy-dom": "^20.8.4",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.4",
+    "vite-plugin-electron": "^0.29.0",
+    "vite-plugin-pwa": "^1.2.0",
+    "vitest": "^4.1.0",
+    "vue-tsc": "^2.2.8",
+    "wait-on": "^8.0.3"
+  },
+  "dependencies": {
+    "@vueuse/core": "^12.7.0",
+    "bcryptjs": "^3.0.2",
+    "better-sqlite3": "^8.2.0",
+    "docx": "^9.6.0",
+    "electron-updater": "^6.8.3",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
+    "pinia": "^3.0.1",
+    "qrcode": "^1.5.4",
+    "vue": "^3.5.0",
+    "vue-router": "^4.5.0",
+    "vuedraggable": "^4.1.0",
+    "xlsx": "^0.18.5"
+  },
+  "build": {
+    "appId": "com.arkhegroup.arkhe-aula",
+    "productName": "Arkhe Aula",
+    "copyright": "Copyright © 2026 Arkhe Group",
+    "asar": false,
+    "directories": {
+      "output": "Ejecutables",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**/*",
+      "dist/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "documentacion",
+        "to": "documentacion",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "mac": {
+      "identity": null,
+      "category": "public.app-category.education",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "darkModeSupport": true,
+      "minimumSystemVersion": "10.12.0"
+    },
+    "dmg": {
+      "title": "Arkhe Aula Installer",
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "publisherName": "Arkhe Group",
+      "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Arkhe Aula",
+      "deleteAppDataOnUninstall": false,
+      "differentialPackage": true
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable-${version}.${ext}"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "josue958",
+        "repo": "Arkhe-Aula",
+        "channel": "latest",
+        "releaseType": "draft",
+        "private": true
+      }
+    ]
+  }
+}

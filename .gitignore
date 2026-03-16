@@ -1,0 +1,17 @@
+node_modules/
+dist/
+dist-app/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+.DS_Store
+Thumbs.db
+.env
+*.log
+build/icon.icns
+build/icon.ico
+build/icon.png
+Ejecutables/
+coverage/
+*.tgz
